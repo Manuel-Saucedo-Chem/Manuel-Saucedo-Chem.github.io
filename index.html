@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manuel Saucedo Cañas — Inorganic Chemistry, UTEP</title>
+<meta name="description" content="Manuel Saucedo Cañas, Ph.D. student in the Fortier Laboratory, Department of Chemistry &amp; Biochemistry, The University of Texas at El Paso.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root{
+  --void:#0A0D12;
+  --panel:#12161D;
+  --panel-2:#171C25;
+  --ink:#E8ECF1;
+  --ink-60:#8C97A6;
+  --glow:#5FD4FF;
+  --glow-dim:rgba(95,212,255,.35);
+  --ember:#E2954F;
+  --rule:#232A35;
+
+  --serif:"Fraunces",Georgia,"Times New Roman",serif;
+  --sans:"Source Sans 3","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono","SF Mono",Consolas,monospace;
+
+  --rail:300px;
+  --gap:clamp(1.5rem,4vw,3.25rem);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+
+body{
+  margin:0;
+  background:var(--void);
+  color:var(--ink);
+  font:400 1.0625rem/1.65 var(--sans);
+  -webkit-font-smoothing:antialiased;
+}
+
+a{color:var(--glow);text-underline-offset:3px;text-decoration-thickness:1px}
+a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:2px solid var(--glow);outline-offset:3px;border-radius:2px}
+
+h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;margin:0}
+p{margin:0 0 1rem}
+p:last-child{margin-bottom:0}
+
+/* ============================================================
+   SHELL — identity rail + content column
+   ============================================================ */
+.shell{
+  max-width:1180px;
+  margin:0 auto;
+  padding:var(--gap);
+  display:grid;
+  gap:var(--gap);
+  grid-template-columns:var(--rail) minmax(0,1fr);
+  align-items:start;
+}
+@media (max-width:860px){
+  .shell{grid-template-columns:1fr}
+}
+
+/* ---------- rail ---------- */
+.rail{position:sticky;top:var(--gap)}
+@media (max-width:860px){.rail{position:static}}
+
+.portrait{
+  position:relative;
+  width:100%;
+  aspect-ratio:4/5;
+  background:var(--panel-2);
+  border:1px solid var(--rule);
+  overflow:hidden;
+  box-shadow:0 0 0 1px rgba(95,212,255,.08),0 30px 60px -30px rgba(95,212,255,.25);
+}
+.portrait::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,transparent 60%,rgba(10,13,18,.75) 100%);
+}
+.portrait img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(.15) contrast(1.05)}
+.portrait .fallback{
+  position:absolute;inset:0;
+  display:grid;place-content:center;gap:.4rem;text-align:center;
+  color:var(--ink-60);font-size:.85rem;padding:1rem;font-family:var(--mono);
+  background:
+    repeating-linear-gradient(45deg,transparent 0 11px,rgba(95,212,255,.05) 11px 12px),
+    var(--panel-2);
+}
+
+.rail h1{
+  font-size:1.9rem;
+  line-height:1.12;
+  margin:1.1rem 0 .25rem;
+  color:var(--ink);
+}
+.role{color:var(--ink-60);margin:0 0 1.1rem;font-size:.98rem}
+.role em{font-style:italic;color:var(--ink)}
+
+/* nav */
+.nav{border-top:1px solid var(--rule);padding-top:.9rem;margin-bottom:1.2rem}
+.nav ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.15rem}
+.nav a{
+  display:block;padding:.28rem 0 .28rem .85rem;
+  text-decoration:none;color:var(--ink-60);
+  border-left:2px solid var(--rule);
+  font-size:.97rem;
+  font-family:var(--mono);
+  transition:border-color .2s,color .2s;
+}
+.nav a:hover{border-left-color:var(--glow);color:var(--glow)}
+@media (max-width:860px){
+  .nav ul{flex-direction:row;flex-wrap:wrap;gap:.1rem .25rem}
+  .nav a{border-left:none;border-bottom:2px solid var(--rule);padding:.2rem .5rem}
+  .nav a:hover{border-left:none;border-bottom-color:var(--glow)}
+}
+
+.contact{border-top:1px solid var(--rule);padding-top:.9rem;font-size:.92rem;color:var(--ink-60);line-height:1.5}
+.contact a{display:inline-block;margin-bottom:.35rem}
+.contact address{font-style:normal;margin-top:.5rem}
+
+/* ============================================================
+   CONTENT
+   ============================================================ */
+.content{min-width:0}
+
+section{padding-bottom:3.25rem;margin-bottom:3.25rem;border-bottom:1px solid var(--rule)}
+section:last-of-type{border-bottom:none;margin-bottom:0;padding-bottom:0}
+
+section > h2{
+  font-size:.85rem;
+  font-weight:500;
+  letter-spacing:.06em;
+  font-family:var(--mono);
+  color:var(--ink-60);
+  margin-bottom:1.25rem;
+}
+
+/* ---------- hero / lattice ---------- */
+.intro{
+  position:relative;
+  padding:clamp(1.75rem,4vw,2.75rem);
+  background:linear-gradient(165deg,var(--panel),var(--panel-2));
+  border:1px solid var(--rule);
+  overflow:hidden;
+}
+.lattice{
+  position:absolute;inset:0;
+  background-image:radial-gradient(circle at center,var(--glow) 1.4px,transparent 1.5px);
+  background-size:28px 28px;
+  opacity:.4;
+  -webkit-mask-image:radial-gradient(ellipse 70% 90% at 92% 8%,#000 0%,transparent 72%);
+  mask-image:radial-gradient(ellipse 70% 90% at 92% 8%,#000 0%,transparent 72%);
+  pointer-events:none;
+  animation:lattice-breathe 7s ease-in-out infinite;
+}
+@keyframes lattice-breathe{
+  0%,100%{opacity:.4}
+  50%{opacity:.7}
+}
+.beam{
+  position:absolute;inset:0;pointer-events:none;overflow:hidden;
+}
+.beam::before{
+  content:"";position:absolute;top:0;bottom:0;width:35%;
+  background:linear-gradient(90deg,transparent,rgba(95,212,255,.08),transparent);
+  animation:sweep 9s linear infinite;
+}
+@keyframes sweep{
+  0%{transform:translateX(-120%)}
+  100%{transform:translateX(340%)}
+}
+.intro > *{position:relative}
+.intro .lede{
+  font-family:var(--serif);
+  font-weight:700;
+  font-size:clamp(1.4rem,2.6vw,1.8rem);
+  line-height:1.32;
+  margin-bottom:1.25rem;
+  max-width:30ch;
+  color:#fff;
+}
+.intro p:not(.lede){max-width:68ch;color:#C3CBD3}
+
+.tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.5rem;padding:0;list-style:none}
+.tags li{
+  font-size:.78rem;color:var(--glow);font-family:var(--mono);
+  border:1px solid rgba(95,212,255,.3);background:rgba(95,212,255,.06);
+  padding:.22rem .6rem;
+}
+
+/* ---------- CV ---------- */
+.cv{display:flex;flex-wrap:wrap;gap:1.5rem;align-items:center;justify-content:space-between}
+.cv p{max-width:48ch;margin:0;color:#C3CBD3}
+.btn{
+  display:inline-block;
+  background:var(--glow);color:#071018;
+  padding:.65rem 1.4rem;
+  text-decoration:none;
+  font-weight:600;
+  border:1px solid var(--glow);
+  box-shadow:0 0 24px -6px rgba(95,212,255,.6);
+  transition:box-shadow .2s,transform .2s;
+}
+.btn:hover{box-shadow:0 0 32px -4px rgba(95,212,255,.85);transform:translateY(-1px)}
+.updated{display:block;font-size:.85rem;color:var(--ink-60);margin-top:.45rem}
+
+/* ---------- programs ---------- */
+.programs{list-style:none;margin:0;padding:0;display:grid;gap:1.6rem}
+.programs li{display:grid;gap:.35rem;padding-left:1.1rem;border-left:2px solid var(--glow)}
+.programs h3{font-size:1.15rem;color:var(--ink)}
+.programs p{max-width:68ch;color:#C3CBD3;margin:0}
+.meta{font-size:.8rem;color:var(--ink-60);font-family:var(--mono)}
+.meta span + span::before{content:" / ";color:var(--rule)}
+
+/* ---------- publications ---------- */
+.pubs{list-style:none;counter-reset:pub;margin:0;padding:0;display:grid;gap:1.4rem}
+.pubs li{
+  position:relative;padding-left:2.2rem;
+  border-left:2px solid var(--rule);
+}
+.pubs li::before{
+  counter-increment:pub;content:counter(pub,decimal-leading-zero);
+  position:absolute;left:0;top:0;transform:translateX(-.05rem);
+  font-family:var(--mono);font-size:.75rem;color:var(--glow);
+  background:var(--void);padding-right:.4rem;
+}
+.pub-title{font-family:var(--serif);font-weight:600;font-size:1.05rem;color:var(--ink);margin-bottom:.3rem}
+.pub-authors{color:#C3CBD3;margin-bottom:.3rem;font-size:.95rem}
+.pub-meta{font-family:var(--mono);font-size:.8rem;color:var(--ink-60);display:flex;flex-wrap:wrap;gap:0}
+.pub-meta span{display:inline-flex;align-items:center}
+.pub-meta span + span::before{content:" · ";color:var(--rule);margin:0 .4rem}
+.pub-meta a{color:var(--glow)}
+
+.pubs-note{font-family:var(--mono);font-size:.8rem;letter-spacing:.04em;color:var(--ink-60);margin-top:2rem;margin-bottom:.75rem}
+.pubs-prep{list-style:none;margin:0;padding:0;display:grid;gap:.7rem}
+.pubs-prep li{font-size:.92rem;color:#8C97A6;padding-left:1rem;border-left:2px solid var(--rule)}
+
+/* ---------- skills ---------- */
+.skills{list-style:none;counter-reset:none;margin:0;padding:0;display:grid;gap:1rem}
+.skills li{
+  display:flex;gap:1rem;align-items:baseline;
+  padding-bottom:1rem;border-bottom:1px solid var(--rule);
+  color:#C3CBD3;
+}
+.skills li:last-child{border-bottom:none;padding-bottom:0}
+.skills .rank{
+  font-family:var(--mono);font-size:.8rem;color:var(--glow);
+  flex:none;width:1.6rem;
+}
+
+/* ---------- programs (addition) ---------- */
+.src-pending{font-family:var(--mono);font-size:.8rem;color:var(--ink-60);margin:0}
+
+
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
+  gap:1rem;
+  margin:0;padding:0;
+}
+.tile{
+  margin:0;background:var(--panel);border:1px solid var(--rule);
+  transition:border-color .2s,box-shadow .2s;
+}
+.tile:hover{border-color:rgba(95,212,255,.4);box-shadow:0 0 28px -12px rgba(95,212,255,.5)}
+.tile button{
+  display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in;
+  aspect-ratio:1/1;position:relative;overflow:hidden;
+}
+.tile img{width:100%;height:100%;object-fit:contain;display:block;background:#fff}
+.tile .fallback{
+  position:absolute;inset:0;display:grid;place-content:center;
+  color:var(--ink-60);font-size:.8rem;text-align:center;padding:.75rem;font-family:var(--mono);
+  background:
+    repeating-linear-gradient(45deg,transparent 0 11px,rgba(95,212,255,.06) 11px 12px),
+    var(--panel);
+}
+.tile figcaption{
+  padding:.55rem .7rem;font-size:.86rem;line-height:1.35;
+  border-top:1px solid var(--rule);
+}
+.tile figcaption b{font-weight:600;color:var(--ember);font-family:var(--serif)}
+.tile figcaption span{display:block;color:var(--ink-60);font-size:.8rem}
+
+/* lightbox */
+dialog#lb{
+  border:0;padding:0;background:transparent;max-width:min(92vw,900px);max-height:92vh;
+}
+dialog#lb::backdrop{background:rgba(6,8,11,.92)}
+dialog#lb .box{background:var(--panel);border:1px solid var(--rule)}
+dialog#lb img{display:block;max-width:100%;max-height:74vh;margin:0 auto;background:#fff}
+dialog#lb .cap{padding:.75rem 1rem;font-size:.92rem;color:var(--ink-60);border-top:1px solid var(--rule);display:flex;justify-content:space-between;gap:1rem;align-items:center}
+dialog#lb button{background:none;color:var(--ink-60);border:1px solid var(--rule);padding:.25rem .6rem;cursor:pointer;font:inherit;font-size:.85rem}
+dialog#lb button:hover{border-color:var(--glow);color:var(--glow)}
+
+footer{
+  border-top:1px solid var(--rule);
+  padding:1.5rem var(--gap) 2.5rem;
+  max-width:1180px;margin:0 auto;
+  font-size:.86rem;color:var(--ink-60);
+}
+</style>
+</head>
+
+<body>
+<div class="shell">
+
+  <!-- ==========================================================
+       IDENTITY RAIL
+       Replace photo.jpg with your headshot (portrait crop, ~800x1000)
+       ========================================================== -->
+  <aside class="rail">
+    <div class="portrait">
+      <img src="images/photo.jpg" alt="Manuel Saucedo" onerror="this.remove()">
+      <div class="fallback">Add <code>images/photo.jpg</code></div>
+    </div>
+
+    <h1>Manuel Saucedo Cañas</h1>
+    <p class="role">Ph.D. student, <em>Fortier Laboratory</em><br>Chemistry &amp; Biochemistry, UTEP</p>
+
+    <nav class="nav" aria-label="Sections">
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#cv">Curriculum vitae</a></li>
+        <li><a href="#publications">Publications</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#programs">Programs</a></li>
+        <li><a href="#structures">Crystal structures</a></li>
+      </ul>
+    </nav>
+
+    <div class="contact">
+      <a href="mailto:masaucedocanas2@miners.utep.edu">masaucedocanas2@miners.utep.edu</a><br>
+      <a href="https://orcid.org/0000-0003-1312-6633">ORCID: 0000-0003-1312-6633</a><br>
+      <a href="https://utminers.utep.edu/asfortier/group.html">Fortier Laboratory</a>
+      <address>
+        Department of Chemistry &amp; Biochemistry<br>
+        The University of Texas at El Paso<br>
+        El Paso, TX 79968
+      </address>
+    </div>
+  </aside>
+
+  <!-- ==========================================================
+       CONTENT
+       ========================================================== -->
+  <main class="content">
+
+    <section id="about">
+      <div class="intro">
+        <div class="lattice" aria-hidden="true"></div>
+        <div class="beam" aria-hidden="true"></div>
+        <p class="lede">I make molecules, grow crystals, and write the code that helps me understand them.</p>
+        <p>I'm a Ph.D. student in the Fortier Laboratory at UTEP, working across low-valent
+          titanium, zirconium, and iron chemistry — from Ti=E chalcogenide multiple bonds
+          (E = N, O, S, Se, Te) to masked Zr(II) synthons and low-coordinate iron centers
+          supported by imidazolin-2-iminato ligands. The throughline is air-, moisture-, and
+          light-sensitive synthesis paired with a full structural and spectroscopic workup:
+          single-crystal X-ray diffraction, multinuclear NMR on both diamagnetic and
+          paramagnetic complexes, EPR, UV-Vis-NIR, and X-ray absorption spectroscopy at
+          NSLS-II.</p>
+        <p>I came into inorganic chemistry from an electrochemistry background — my
+          bachelor's work focused on electroanalytical methods, which led to two publications
+          on that front. That grounding still shows up in how I approach a new
+          compound: cyclic voltammetry alongside crystallography, and a Python-based
+          CV analysis suite I built to speed up the data side of it.</p>
+        <ul class="tags">
+          <li>Ti / Zr / Fe chemistry</li>
+          <li>Single-crystal XRD</li>
+          <li>Multinuclear NMR (dia- &amp; paramagnetic)</li>
+          <li>Electrochemistry</li>
+          <li>EPR &amp; XAS</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="cv">
+      <h2>Curriculum vitae</h2>
+      <div class="cv">
+        <p>Education, research and teaching experience, presentations, and awards — the
+          full record in one PDF.
+          <span class="updated">Last updated 2026</span></p>
+        <a class="btn" href="cv/Manuel-Saucedo-CV.pdf">Download CV (PDF)</a>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         PUBLICATIONS — ordered most recent first
+         ========================================================== -->
+    <section id="publications">
+      <h2>Publications</h2>
+      <ol class="pubs">
+        <li>
+          <p class="pub-title">Crystal and Molecular Structure of Guaiazulene and Its Potassium Crown Ether Salt: A Conglomerate</p>
+          <p class="pub-authors">I. Bernal, R. A. Lalancette, S. Fortier, M. Saucedo-Cañas, P. Kucheryavy</p>
+          <p class="pub-meta"><span>Cryst. Growth Des.</span><span>2025</span><span><a href="https://doi.org/10.1021/acs.cgd.4c01760">10.1021/acs.cgd.4c01760</a></span></p>
+        </li>
+        <li>
+          <p class="pub-title">Porphyrin-functionalized glassy carbon electrodes for electrochemical water splitting</p>
+          <p class="pub-authors">N. Ocuane, N. Jafari, J. Calvillo, M. Saucedo, D. Villagrán</p>
+          <p class="pub-meta"><span>Dalton Trans.</span><span>2025</span><span><a href="https://doi.org/10.1039/D5DT01390A">10.1039/D5DT01390A</a></span></p>
+        </li>
+        <li>
+          <p class="pub-title">Low Cost Pencil Graphite Electrode for Sensitive Determination of Pb(II) and Cd(II)</p>
+          <p class="pub-authors">M. A. Saucedo, M. Galicia, K. A. Carrasco</p>
+          <p class="pub-meta"><span>ECS Trans.</span><span>2023</span><span><a href="https://doi.org/10.1149/11001.0255ecst">10.1149/11001.0255ecst</a></span></p>
+        </li>
+      </ol>
+
+      <p class="pubs-note">In preparation</p>
+      <ul class="pubs-prep">
+        <li>Titanium(IV)/Titanium(III) chalcogenide complexes across the E = N, O, S, Se, Te series: synthesis, electrochemistry, and electronic structure — M. Saucedo, et al.; S. Fortier</li>
+        <li>A linear bis(imidazolin-2-iminato) iron(II) complex: synthesis and electronic structure — M. Saucedo, et al.; S. Fortier</li>
+      </ul>
+
+      <p style="margin-top:1.25rem;font-size:.95rem">
+        Full and updated list: <a href="https://orcid.org/0000-0003-1312-6633">orcid.org/0000-0003-1312-6633</a>
+      </p>
+    </section>
+
+    <!-- ==========================================================
+         SKILLS — flat list, ordered by strength (strongest first)
+         ========================================================== -->
+    <section id="skills">
+      <h2>Skills &amp; techniques</h2>
+      <ol class="skills">
+        <li><span class="rank">01</span> Single-crystal X-ray diffraction — independent, crystal growth through refinement (APEX4, SAINT, SADABS, SHELXL, Olex2, PLATON)</li>
+        <li><span class="rank">02</span> Air-, moisture-, temperature-, and light-sensitive synthesis (Schlenk line, glovebox)</li>
+        <li><span class="rank">03</span> Electrochemistry — cyclic voltammetry, Randles–Ševčík analysis; two publications in this area</li>
+        <li><span class="rank">04</span> Multinuclear NMR of diamagnetic and paramagnetic complexes (¹H, ²H, ¹³C, ⁷Li, ²⁹Si, ¹¹B, ¹⁹F, ³¹P; COSY, HSQC)</li>
+        <li><span class="rank">05</span> EPR spectroscopy — acquisition and simulation of Ti(III)/Fe(II,III) spectra (EasySpin/MATLAB)</li>
+        <li><span class="rank">06</span> X-ray absorption spectroscopy (XANES) — trained user, NSLS-II, Brookhaven National Laboratory</li>
+        <li><span class="rank">07</span> Ligand design — NHC-derived imidazolin-2-iminato frameworks</li>
+        <li><span class="rank">08</span> Scientific computing — Python and MATLAB tools for spectroscopic and electrochemical data processing</li>
+      </ol>
+    </section>
+
+    <!-- ==========================================================
+         PROGRAMS — duplicate an <li> for each tool
+         ========================================================== -->
+    <section id="programs">
+      <h2>Programs I've written</h2>
+      <ul class="programs">
+        <li>
+          <h3>Cyclic voltammetry analysis suite</h3>
+          <p class="meta"><span>Python</span><span>Fortier Laboratory</span></p>
+          <p>Processes cyclic voltammetry data and runs Randles–Ševčík analysis — built to
+            speed up routine electrochemical workup in the group.</p>
+          <p class="src-pending">Source: private repo, publishing soon</p>
+        </li>
+        <li>
+          <h3>NMR processing suite</h3>
+          <p class="meta"><span>Python</span><span>Fortier Laboratory</span></p>
+          <p>An Mnova-style tool for processing and picking peaks in NMR spectra, tuned for
+            the air-sensitive dia- and paramagnetic complexes the group works with.</p>
+          <p class="src-pending">Source: private repo, publishing soon</p>
+        </li>
+        <li>
+          <h3>EPR file assembler</h3>
+          <p class="meta"><span>MATLAB</span><span>Fortier Laboratory</span></p>
+          <p>Builds the input files that feed EasySpin, turning raw EPR acquisition
+            parameters into simulation-ready code.</p>
+          <p class="src-pending">Source: private repo, publishing soon</p>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ==========================================================
+         STRUCTURES — .png, .jpg and .gif all work here.
+         Put files in images/structures/ and edit src + caption.
+         ========================================================== -->
+    <section id="structures">
+      <h2>Crystal structures</h2>
+      <p style="max-width:68ch;margin-bottom:1.5rem">Solid-state structures from my work,
+        rendered with thermal ellipsoids at 50% probability. Click any structure to enlarge.</p>
+
+      <div class="gallery">
+
+        <figure class="tile">
+          <button type="button" data-src="images/structures/structure-1.png" data-cap="Compound 1" data-sub="Thermal ellipsoids, 50% probability">
+            <img src="images/structures/structure-1.png" alt="Compound 1" onerror="this.remove()">
+            <span class="fallback">structure-1.png</span>
+          </button>
+          <figcaption><b>Compound 1</b><span>Short structural note</span></figcaption>
+        </figure>
+
+        <figure class="tile">
+          <button type="button" data-src="images/structures/structure-2.png" data-cap="Compound 2" data-sub="Thermal ellipsoids, 50% probability">
+            <img src="images/structures/structure-2.png" alt="Compound 2" onerror="this.remove()">
+            <span class="fallback">structure-2.png</span>
+          </button>
+          <figcaption><b>Compound 2</b><span>Short structural note</span></figcaption>
+        </figure>
+
+        <figure class="tile">
+          <button type="button" data-src="images/structures/structure-3.gif" data-cap="Compound 3" data-sub="Rotation about the molecular axis">
+            <img src="images/structures/structure-3.gif" alt="Compound 3, rotating" onerror="this.remove()">
+            <span class="fallback">structure-3.gif</span>
+          </button>
+          <figcaption><b>Compound 3</b><span>Animated rotation</span></figcaption>
+        </figure>
+
+        <figure class="tile">
+          <button type="button" data-src="images/structures/structure-4.png" data-cap="Compound 4" data-sub="Thermal ellipsoids, 50% probability">
+            <img src="images/structures/structure-4.png" alt="Compound 4" onerror="this.remove()">
+            <span class="fallback">structure-4.png</span>
+          </button>
+          <figcaption><b>Compound 4</b><span>Short structural note</span></figcaption>
+        </figure>
+
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer>© 2026 Manuel Saucedo · Department of Chemistry &amp; Biochemistry, The University of Texas at El Paso</footer>
+
+<dialog id="lb" aria-label="Enlarged structure">
+  <div class="box">
+    <img id="lb-img" src="" alt="">
+    <div class="cap"><span id="lb-cap"></span><button type="button" id="lb-close">Close</button></div>
+  </div>
+</dialog>
+
+<script>
+(function(){
+  var lb=document.getElementById('lb'),img=document.getElementById('lb-img'),cap=document.getElementById('lb-cap');
+  document.querySelectorAll('.tile button').forEach(function(b){
+    b.addEventListener('click',function(){
+      img.src=b.dataset.src; img.alt=b.dataset.cap||'';
+      cap.textContent=(b.dataset.cap||'')+(b.dataset.sub?' — '+b.dataset.sub:'');
+      if(lb.showModal) lb.showModal();
+    });
+  });
+  document.getElementById('lb-close').addEventListener('click',function(){lb.close()});
+  lb.addEventListener('click',function(e){if(e.target===lb) lb.close()});
+})();
+</script>
+</body>
+</html>
