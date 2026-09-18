@@ -70,17 +70,8 @@ p:last-child{margin-bottom:0}
 }
 
 /* ---------- rail ---------- */
-.rail{
-  position:sticky;top:var(--gap);
-  max-height:calc(100vh - var(--gap) * 2);
-  overflow-y:auto;
-  overscroll-behavior:contain;
-  scrollbar-width:thin;
-  scrollbar-color:var(--rule) transparent;
-}
-.rail::-webkit-scrollbar{width:6px}
-.rail::-webkit-scrollbar-thumb{background:var(--rule);border-radius:3px}
-@media (max-width:860px){.rail{position:static;max-height:none;overflow-y:visible}}
+.rail{position:sticky;top:var(--gap)}
+@media (max-width:860px){.rail{position:static}}
 
 .portrait{
   position:relative;
@@ -114,22 +105,33 @@ p:last-child{margin-bottom:0}
 .role{color:var(--ink-60);margin:0 0 1.1rem;font-size:.98rem}
 .role em{font-style:italic;color:var(--ink)}
 
-/* nav */
-.nav{border-top:1px solid var(--rule);padding-top:.9rem;margin-bottom:1.2rem}
-.nav ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.15rem}
-.nav a{
-  display:block;padding:.28rem 0 .28rem .85rem;
+/* tabs (horizontal section nav, top of content column) */
+.tabs{
+  position:sticky;top:0;z-index:5;
+  background:var(--void);
+  border-bottom:1px solid var(--rule);
+  margin-bottom:2.5rem;
+  padding-top:.25rem;
+}
+.tabs ul{
+  list-style:none;margin:0;padding:0;
+  display:flex;flex-wrap:wrap;gap:1.5rem;
+}
+.tabs a{
+  display:inline-block;
+  padding:0 0 .85rem;
   text-decoration:none;color:var(--ink-60);
-  border-left:2px solid var(--rule);
-  font-size:.97rem;
+  border-bottom:2px solid transparent;
+  font-size:.92rem;
   font-family:var(--mono);
+  white-space:nowrap;
   transition:border-color .2s,color .2s;
 }
-.nav a:hover{border-left-color:var(--glow);color:var(--glow)}
+.tabs a:hover{border-bottom-color:var(--glow-dim);color:var(--ink)}
+.tabs a.is-active{border-bottom-color:var(--glow);color:var(--glow)}
 @media (max-width:860px){
-  .nav ul{flex-direction:row;flex-wrap:wrap;gap:.1rem .25rem}
-  .nav a{border-left:none;border-bottom:2px solid var(--rule);padding:.2rem .5rem}
-  .nav a:hover{border-left:none;border-bottom-color:var(--glow)}
+  .tabs{position:static}
+  .tabs ul{gap:.25rem .9rem;overflow-x:auto;flex-wrap:nowrap;padding-bottom:.25rem}
 }
 
 .contact{border-top:1px solid var(--rule);padding-top:.9rem;font-size:.92rem;color:var(--ink-60);line-height:1.5}
@@ -337,17 +339,6 @@ footer{
     <h1>Manuel Saucedo Cañas</h1>
     <p class="role">Ph.D. student, <em>Fortier Laboratory</em><br>Chemistry &amp; Biochemistry, UTEP</p>
 
-    <nav class="nav" aria-label="Sections">
-      <ul>
-        <li><a href="#about">About</a></li>
-        <li><a href="#cv">Curriculum vitae</a></li>
-        <li><a href="#publications">Publications</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#programs">Programs</a></li>
-        <li><a href="#structures">Crystal structures</a></li>
-      </ul>
-    </nav>
-
     <div class="contact">
       <a href="mailto:masaucedocanas2@miners.utep.edu">masaucedocanas2@miners.utep.edu</a><br>
       <a href="https://orcid.org/0000-0003-1312-6633">ORCID: 0000-0003-1312-6633</a><br>
@@ -364,6 +355,17 @@ footer{
        CONTENT
        ========================================================== -->
   <main class="content">
+
+    <nav class="tabs" aria-label="Sections">
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#cv">Curriculum vitae</a></li>
+        <li><a href="#publications">Publications</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#programs">Programs</a></li>
+        <li><a href="#structures">Crystal structures</a></li>
+      </ul>
+    </nav>
 
     <section id="about">
       <div class="intro">
