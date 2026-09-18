@@ -128,7 +128,10 @@ p:last-child{margin-bottom:0}
   transition:border-color .2s,color .2s;
 }
 .tabs a:hover{border-bottom-color:var(--glow-dim);color:var(--ink)}
-.tabs a.is-active{border-bottom-color:var(--glow);color:var(--glow)}
+.tabs a.is-active{
+  border-bottom-color:var(--glow);color:var(--glow);
+  text-shadow:0 0 10px var(--glow-dim);
+}
 @media (max-width:860px){
   .tabs{position:static}
   .tabs ul{gap:.25rem .9rem;overflow-x:auto;flex-wrap:nowrap;padding-bottom:.25rem}
@@ -143,7 +146,7 @@ p:last-child{margin-bottom:0}
    ============================================================ */
 .content{min-width:0}
 
-section{padding-bottom:3.25rem;margin-bottom:3.25rem;border-bottom:1px solid var(--rule)}
+section{padding-bottom:3.25rem;margin-bottom:3.25rem;border-bottom:1px solid var(--rule);scroll-margin-top:5.5rem}
 section:last-of-type{border-bottom:none;margin-bottom:0;padding-bottom:0}
 
 section > h2{
@@ -509,6 +512,11 @@ footer{
             <figcaption><b>Fe(ImN)₂</b><span>Linear bis(imidazolin-2-iminato) Fe(II) complex — rotation about the molecular axis</span></figcaption>
           </figure>
 
+          <figure class="slide">
+            <img src="images/fe-imn2-thf.gif" alt="Fe(ImN)2 THF adduct, rotating" onerror="this.closest('.slide').remove()">
+            <figcaption><b>Fe(ImN)₂ · THF</b><span>Edit this caption in index.html to match the actual structure</span></figcaption>
+          </figure>
+
           <button type="button" class="slide-arrow prev" aria-label="Previous structure">&#8249;</button>
           <button type="button" class="slide-arrow next" aria-label="Next structure">&#8250;</button>
         </div>
@@ -576,6 +584,38 @@ footer{
   new MutationObserver(rebuildDots).observe(viewport, {childList:true});
 
   rebuildDots();
+})();
+</script>
+<script>
+(function(){
+  var tabLinks = Array.prototype.slice.call(document.querySelectorAll('.tabs a'));
+  var tabsBar = document.querySelector('.tabs');
+  if(!tabLinks.length || !tabsBar) return;
+
+  var sections = tabLinks.map(function(a){
+    return document.querySelector(a.getAttribute('href'));
+  });
+
+  function setActive(id){
+    tabLinks.forEach(function(a){
+      a.classList.toggle('is-active', a.getAttribute('href') === '#' + id);
+    });
+  }
+
+  function onScroll(){
+    var offset = tabsBar.offsetHeight + 24;
+    var current = sections[0];
+    for(var i = 0; i < sections.length; i++){
+      var sec = sections[i];
+      if(!sec) continue;
+      if(sec.getBoundingClientRect().top - offset <= 0) current = sec;
+    }
+    if(current) setActive(current.id);
+  }
+
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', onScroll);
+  onScroll();
 })();
 </script>
 </body>
