@@ -70,8 +70,17 @@ p:last-child{margin-bottom:0}
 }
 
 /* ---------- rail ---------- */
-.rail{position:sticky;top:var(--gap)}
-@media (max-width:860px){.rail{position:static}}
+.rail{
+  position:sticky;top:var(--gap);
+  max-height:calc(100vh - var(--gap) * 2);
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  scrollbar-width:thin;
+  scrollbar-color:var(--rule) transparent;
+}
+.rail::-webkit-scrollbar{width:6px}
+.rail::-webkit-scrollbar-thumb{background:var(--rule);border-radius:3px}
+@media (max-width:860px){.rail{position:static;max-height:none;overflow-y:visible}}
 
 .portrait{
   position:relative;
@@ -261,46 +270,47 @@ section > h2{
 .src-pending{font-family:var(--mono);font-size:.8rem;color:var(--ink-60);margin:0}
 
 
-.gallery{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
-  gap:1rem;
-  margin:0;padding:0;
+/* ---------- structures slideshow ---------- */
+.slideshow{margin:0}
+.slide-viewport{
+  position:relative;
+  background:var(--panel);border:1px solid var(--rule);
+  display:flex;align-items:center;justify-content:center;
+  min-height:340px;
+  overflow:hidden;
 }
-.tile{
-  margin:0;background:var(--panel);border:1px solid var(--rule);
-  transition:border-color .2s,box-shadow .2s;
+.slide{display:none;width:100%;text-align:center}
+.slide.is-active{display:block}
+.slide img{
+  display:block;width:auto;height:auto;
+  max-width:100%;max-height:min(72vh,640px);
+  margin:0 auto;background:#fff;
 }
-.tile:hover{border-color:rgba(95,212,255,.4);box-shadow:0 0 28px -12px rgba(95,212,255,.5)}
-.tile button{
-  display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in;
-  aspect-ratio:1/1;position:relative;overflow:hidden;
+.slide figcaption{
+  padding:.85rem 1rem;font-size:.92rem;line-height:1.35;
+  border-top:1px solid var(--rule);text-align:left;
 }
-.tile img{width:100%;height:100%;object-fit:contain;display:block;background:#fff}
-.tile .fallback{
-  position:absolute;inset:0;display:grid;place-content:center;
-  color:var(--ink-60);font-size:.8rem;text-align:center;padding:.75rem;font-family:var(--mono);
-  background:
-    repeating-linear-gradient(45deg,transparent 0 11px,rgba(95,212,255,.06) 11px 12px),
-    var(--panel);
-}
-.tile figcaption{
-  padding:.55rem .7rem;font-size:.86rem;line-height:1.35;
-  border-top:1px solid var(--rule);
-}
-.tile figcaption b{font-weight:600;color:var(--ember);font-family:var(--serif)}
-.tile figcaption span{display:block;color:var(--ink-60);font-size:.8rem}
+.slide figcaption b{font-weight:600;color:var(--ember);font-family:var(--serif);font-size:1.05rem}
+.slide figcaption span{display:block;color:var(--ink-60);font-size:.82rem;margin-top:.15rem}
 
-/* lightbox */
-dialog#lb{
-  border:0;padding:0;background:transparent;max-width:min(92vw,900px);max-height:92vh;
+.slide-arrow{
+  position:absolute;top:0;bottom:0;width:3rem;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(180deg,rgba(10,13,18,.0),rgba(10,13,18,.0));
+  border:0;color:var(--glow);font-size:1.8rem;cursor:pointer;
+  transition:background .2s;
 }
-dialog#lb::backdrop{background:rgba(6,8,11,.92)}
-dialog#lb .box{background:var(--panel);border:1px solid var(--rule)}
-dialog#lb img{display:block;max-width:100%;max-height:74vh;margin:0 auto;background:#fff}
-dialog#lb .cap{padding:.75rem 1rem;font-size:.92rem;color:var(--ink-60);border-top:1px solid var(--rule);display:flex;justify-content:space-between;gap:1rem;align-items:center}
-dialog#lb button{background:none;color:var(--ink-60);border:1px solid var(--rule);padding:.25rem .6rem;cursor:pointer;font:inherit;font-size:.85rem}
-dialog#lb button:hover{border-color:var(--glow);color:var(--glow)}
+.slide-arrow:hover{background:rgba(95,212,255,.08)}
+.slide-arrow.prev{left:0}
+.slide-arrow.next{right:0}
+
+.slide-dots{display:flex;gap:.5rem;justify-content:center;margin-top:1rem}
+.slide-dots button{
+  width:.55rem;height:.55rem;border-radius:50%;padding:0;
+  border:1px solid var(--rule);background:var(--panel-2);cursor:pointer;
+  transition:background .2s,border-color .2s;
+}
+.slide-dots button.is-active{background:var(--glow);border-color:var(--glow)}
 
 footer{
   border-top:1px solid var(--rule);
@@ -359,21 +369,24 @@ footer{
       <div class="intro">
         <div class="lattice" aria-hidden="true"></div>
         <div class="beam" aria-hidden="true"></div>
-        <p class="lede">I make molecules, grow crystals, and write the code that helps me understand them.</p>
-        <p>My work lives in the low-valent chemistry of titanium, zirconium, and iron —
-          building multiple bonds where few expect to find them (Ti=E chalcogenides across
-          E = N, O, S, Se, Te), coaxing zirconium down to Zr(II), and pushing iron into rare
-          linear geometries with imidazolin-2-iminato ligands. Most of what I make doesn't
-          survive contact with air or light, so synthesis happens on the Schlenk line and
-          in the glovebox, and every compound gets the full workup afterward: X-ray
-          diffraction to see the structure, multinuclear NMR and EPR (paramagnetic complexes
-          included) to read the electronics, and beamtime at NSLS-II for X-ray absorption
-          spectroscopy.</p>
-        <p>I got here by way of electrochemistry — my undergrad research was
-          electroanalytical methods, which turned into two publications before I ever
-          touched a glovebox. That background still shapes how I work: I run cyclic
-          voltammetry alongside crystallography on new compounds, and I built a Python-based
-          CV analysis suite to keep the data side moving fast.</p>
+        <p class="lede">I build metals into oxidation states and bonding motifs they aren't supposed to hold.</p>
+        <p>My research, conducted in the Fortier Laboratory at UTEP under Prof. Skye
+          Fortier, centers on low-valent and multiply-bonded early transition metal
+          complexes — chemistry that sits outside the conventional stability window for
+          these elements. This includes a titanium chalcogenide series spanning the
+          Ti(IV)/Ti(III) redox couple across E = N, O, S, Se, and Te, masked Zr(II) synthons
+          stabilized against disproportionation, and a rare linear Fe(II) complex supported
+          by imidazolin-2-iminato ligands. Most of what I make cannot survive light, air, or
+          a careless breath of moisture, so it is born and lives entirely on the Schlenk
+          line and behind glovebox glass.</p>
+        <p>Every new compound is characterized as completely as the chemistry demands:
+          single-crystal X-ray diffraction to confirm structure and bond order, multinuclear
+          NMR — including paramagnetic systems — to probe solution behavior, and EPR for
+          electronic structure.</p>
+        <p>Outside the glovebox, I write the software that speeds this work up — turning
+          repetitive, time-consuming data processing into something faster and more
+          intuitive. Time in this field is finite and rarely forgiving, and I'd rather spend
+          it on the chemistry.</p>
         <ul class="tags">
           <li>Ti / Zr / Fe chemistry</li>
           <li>Single-crystal XRD</li>
@@ -476,48 +489,28 @@ footer{
     </section>
 
     <!-- ==========================================================
-         STRUCTURES — .png, .jpg and .gif all work here.
-         Put files in images/structures/ and edit src + caption.
+         STRUCTURES SLIDESHOW
+         To add another structure: copy a <figure class="slide"> block
+         and paste it right after this one, inside .slide-viewport,
+         before the arrow buttons. First slide should keep is-active.
          ========================================================== -->
     <section id="structures">
       <h2>Crystal structures</h2>
       <p style="max-width:68ch;margin-bottom:1.5rem">Solid-state structures from my work,
-        rendered with thermal ellipsoids at 50% probability. Click any structure to enlarge.</p>
+        rendered with thermal ellipsoids at 50% probability.</p>
 
-      <div class="gallery">
+      <div class="slideshow" id="structure-slideshow">
+        <div class="slide-viewport">
 
-        <figure class="tile">
-          <button type="button" data-src="images/structures/structure-1.png" data-cap="Compound 1" data-sub="Thermal ellipsoids, 50% probability">
-            <img src="images/structures/structure-1.png" alt="Compound 1" onerror="this.remove()" onload="this.nextElementSibling.style.display='none'">
-            <span class="fallback">structure-1.png</span>
-          </button>
-          <figcaption><b>Compound 1</b><span>Short structural note</span></figcaption>
-        </figure>
+          <figure class="slide is-active">
+            <img src="images/fe-imn2.gif" alt="Fe(ImN)2, rotating" onerror="this.closest('.slide').remove()">
+            <figcaption><b>Fe(ImN)₂</b><span>Linear bis(imidazolin-2-iminato) Fe(II) complex — rotation about the molecular axis</span></figcaption>
+          </figure>
 
-        <figure class="tile">
-          <button type="button" data-src="images/structures/structure-2.png" data-cap="Compound 2" data-sub="Thermal ellipsoids, 50% probability">
-            <img src="images/structures/structure-2.png" alt="Compound 2" onerror="this.remove()" onload="this.nextElementSibling.style.display='none'">
-            <span class="fallback">structure-2.png</span>
-          </button>
-          <figcaption><b>Compound 2</b><span>Short structural note</span></figcaption>
-        </figure>
-
-        <figure class="tile">
-          <button type="button" data-src="images/fe-imn2.gif" data-cap="Fe(ImN)₂" data-sub="Rotation about the molecular axis">
-            <img src="images/fe-imn2.gif" alt="Fe(ImN)2, rotating" onerror="this.remove()" onload="this.nextElementSibling.style.display='none'">
-            <span class="fallback">fe-imn2.gif</span>
-          </button>
-          <figcaption><b>Fe(ImN)₂</b><span>Linear bis(imidazolin-2-iminato) Fe(II) complex</span></figcaption>
-        </figure>
-
-        <figure class="tile">
-          <button type="button" data-src="images/structures/structure-4.png" data-cap="Compound 4" data-sub="Thermal ellipsoids, 50% probability">
-            <img src="images/structures/structure-4.png" alt="Compound 4" onerror="this.remove()" onload="this.nextElementSibling.style.display='none'">
-            <span class="fallback">structure-4.png</span>
-          </button>
-          <figcaption><b>Compound 4</b><span>Short structural note</span></figcaption>
-        </figure>
-
+          <button type="button" class="slide-arrow prev" aria-label="Previous structure">&#8249;</button>
+          <button type="button" class="slide-arrow next" aria-label="Next structure">&#8250;</button>
+        </div>
+        <div class="slide-dots"></div>
       </div>
     </section>
 
@@ -526,25 +519,61 @@ footer{
 
 <footer>© 2026 Manuel Saucedo · Department of Chemistry &amp; Biochemistry, The University of Texas at El Paso</footer>
 
-<dialog id="lb" aria-label="Enlarged structure">
-  <div class="box">
-    <img id="lb-img" src="" alt="">
-    <div class="cap"><span id="lb-cap"></span><button type="button" id="lb-close">Close</button></div>
-  </div>
-</dialog>
-
 <script>
 (function(){
-  var lb=document.getElementById('lb'),img=document.getElementById('lb-img'),cap=document.getElementById('lb-cap');
-  document.querySelectorAll('.tile button').forEach(function(b){
-    b.addEventListener('click',function(){
-      img.src=b.dataset.src; img.alt=b.dataset.cap||'';
-      cap.textContent=(b.dataset.cap||'')+(b.dataset.sub?' — '+b.dataset.sub:'');
-      if(lb.showModal) lb.showModal();
+  var wrap = document.getElementById('structure-slideshow');
+  if(!wrap) return;
+  var viewport = wrap.querySelector('.slide-viewport');
+  var dotsWrap = wrap.querySelector('.slide-dots');
+  var prevBtn = wrap.querySelector('.slide-arrow.prev');
+  var nextBtn = wrap.querySelector('.slide-arrow.next');
+  var idx = 0;
+
+  function slides(){ return Array.prototype.slice.call(viewport.querySelectorAll('.slide')); }
+
+  function show(i){
+    var list = slides();
+    if(!list.length) return;
+    idx = (i + list.length) % list.length;
+    list.forEach(function(s, j){ s.classList.toggle('is-active', j === idx); });
+    if(dotsWrap){
+      Array.prototype.slice.call(dotsWrap.children).forEach(function(d, j){
+        d.classList.toggle('is-active', j === idx);
+      });
+    }
+  }
+
+  function rebuildDots(){
+    var list = slides();
+    if(!dotsWrap) return;
+    dotsWrap.innerHTML = '';
+    if(list.length <= 1){
+      dotsWrap.style.display = 'none';
+      if(prevBtn) prevBtn.style.display = 'none';
+      if(nextBtn) nextBtn.style.display = 'none';
+      return;
+    }
+    dotsWrap.style.display = '';
+    if(prevBtn) prevBtn.style.display = '';
+    if(nextBtn) nextBtn.style.display = '';
+    list.forEach(function(_, j){
+      var dot = document.createElement('button');
+      dot.type = 'button';
+      dot.setAttribute('aria-label', 'Go to structure ' + (j + 1));
+      dot.addEventListener('click', function(){ show(j); });
+      dotsWrap.appendChild(dot);
     });
-  });
-  document.getElementById('lb-close').addEventListener('click',function(){lb.close()});
-  lb.addEventListener('click',function(e){if(e.target===lb) lb.close()});
+    show(idx);
+  }
+
+  if(prevBtn) prevBtn.addEventListener('click', function(){ show(idx - 1); });
+  if(nextBtn) nextBtn.addEventListener('click', function(){ show(idx + 1); });
+
+  // If a structure image 404s, its whole slide removes itself (onerror on
+  // the <img>) — watch for that and keep the dots/arrows in sync.
+  new MutationObserver(rebuildDots).observe(viewport, {childList:true});
+
+  rebuildDots();
 })();
 </script>
 </body>
