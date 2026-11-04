@@ -1,15 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="professional">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Manuel Saucedo Cañas — Inorganic Chemistry, UTEP</title>
-<meta name="description" content="Manuel Saucedo Cañas, Ph.D. student in the Fortier Laboratory, Department of Chemistry &amp; Biochemistry, The University of Texas at El Paso.">
+<title>Manuel Alberto Saucedo Cañas — Inorganic Chemistry, UTEP</title>
+<meta name="description" content="Manuel Alberto Saucedo Cañas, Ph.D. student in the Fortier Laboratory, Department of Chemistry &amp; Biochemistry, The University of Texas at El Paso.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
+<script>
+try{var t=localStorage.getItem('site-theme');if(t==='professional'||t==='hacker'||t==='neon')document.documentElement.setAttribute('data-theme',t);}catch(e){}
+</script>
 <style>
 /* ============================================================
    TOKENS
@@ -21,9 +24,16 @@
   --ink:#E8ECF1;
   --ink-60:#8C97A6;
   --glow:#5FD4FF;
-  --glow-dim:rgba(95,212,255,.35);
+  --glow-dim:rgba(var(--glow-rgb),.35);
   --ember:#E2954F;
   --rule:#232A35;
+  --ink-80:#C3CBD3;
+  --ink-strong:#fff;
+  --on-glow:#071018;
+  --glow-rgb:95,212,255;
+  --void-rgb:10,13,18;
+  --photo-filter:grayscale(.15) contrast(1.05);
+  --tab-font:var(--mono);
 
   --serif:"Fraunces",Georgia,"Times New Roman",serif;
   --sans:"Source Sans 3","Helvetica Neue",Arial,sans-serif;
@@ -80,19 +90,19 @@ p:last-child{margin-bottom:0}
   background:var(--panel-2);
   border:1px solid var(--rule);
   overflow:hidden;
-  box-shadow:0 0 0 1px rgba(95,212,255,.08),0 30px 60px -30px rgba(95,212,255,.25);
+  box-shadow:0 0 0 1px rgba(var(--glow-rgb),.08),0 30px 60px -30px rgba(var(--glow-rgb),.25);
 }
 .portrait::after{
   content:"";position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(180deg,transparent 60%,rgba(10,13,18,.75) 100%);
+  background:linear-gradient(180deg,transparent 60%,rgba(var(--void-rgb),.75) 100%);
 }
-.portrait img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(.15) contrast(1.05)}
+.portrait img{width:100%;height:100%;object-fit:cover;display:block;filter:var(--photo-filter)}
 .portrait .fallback{
   position:absolute;inset:0;
   display:grid;place-content:center;gap:.4rem;text-align:center;
   color:var(--ink-60);font-size:.85rem;padding:1rem;font-family:var(--mono);
   background:
-    repeating-linear-gradient(45deg,transparent 0 11px,rgba(95,212,255,.05) 11px 12px),
+    repeating-linear-gradient(45deg,transparent 0 11px,rgba(var(--glow-rgb),.05) 11px 12px),
     var(--panel-2);
 }
 
@@ -107,8 +117,9 @@ p:last-child{margin-bottom:0}
 
 /* tabs (horizontal section nav, top of content column) */
 .tabs{
-  position:sticky;top:0;z-index:5;
+  position:sticky;top:3.2rem;z-index:5;
   background:var(--void);
+  box-shadow:0 -3.2rem 0 0 var(--void); /* fills the strip under the theme switcher when stuck */
   border-bottom:1px solid var(--rule);
   margin-bottom:2.5rem;
   padding-top:.25rem;
@@ -123,7 +134,7 @@ p:last-child{margin-bottom:0}
   text-decoration:none;color:var(--ink-60);
   border-bottom:2px solid transparent;
   font-size:.92rem;
-  font-family:var(--mono);
+  font-family:var(--tab-font);
   white-space:nowrap;
   transition:border-color .2s,color .2s;
 }
@@ -148,6 +159,15 @@ p:last-child{margin-bottom:0}
 
 section{padding-bottom:3.25rem;margin-bottom:3.25rem;border-bottom:1px solid var(--rule);scroll-margin-top:var(--tabs-offset,5.5rem)}
 section:last-of-type{border-bottom:none;margin-bottom:0;padding-bottom:0}
+
+/* real tabs: with JS on, only the selected section is shown */
+.js-tabs .content > section{display:none;border-bottom:none;margin-bottom:0;padding-bottom:0}
+.js-tabs .content > section.is-current{display:block;animation:tabIn .25s ease}
+@keyframes tabIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.js-tabs .content > section.is-current{animation:none}}
+/* the portrait only appears on the About tab */
+.js-tabs:not(.on-about) .portrait{display:none}
+.js-tabs:not(.on-about) .rail h1{margin-top:0}
 
 section > h2{
   font-size:.85rem;
@@ -185,7 +205,7 @@ section > h2{
 }
 .beam::before{
   content:"";position:absolute;top:0;bottom:0;width:35%;
-  background:linear-gradient(90deg,transparent,rgba(95,212,255,.08),transparent);
+  background:linear-gradient(90deg,transparent,rgba(var(--glow-rgb),.08),transparent);
   animation:sweep 9s linear infinite;
 }
 @keyframes sweep{
@@ -200,38 +220,38 @@ section > h2{
   line-height:1.32;
   margin-bottom:1.25rem;
   max-width:30ch;
-  color:#fff;
+  color:var(--ink-strong);
 }
-.intro p:not(.lede){max-width:68ch;color:#C3CBD3}
+.intro p:not(.lede){max-width:68ch;color:var(--ink-80);text-align:justify;hyphens:auto;-webkit-hyphens:auto}
 
 .tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.5rem;padding:0;list-style:none}
 .tags li{
   font-size:.78rem;color:var(--glow);font-family:var(--mono);
-  border:1px solid rgba(95,212,255,.3);background:rgba(95,212,255,.06);
+  border:1px solid rgba(var(--glow-rgb),.3);background:rgba(var(--glow-rgb),.06);
   padding:.22rem .6rem;
 }
 
 /* ---------- CV ---------- */
 .cv{display:flex;flex-wrap:wrap;gap:1.5rem;align-items:center;justify-content:space-between}
-.cv p{max-width:48ch;margin:0;color:#C3CBD3}
+.cv p{max-width:48ch;margin:0;color:var(--ink-80)}
 .btn{
   display:inline-block;
-  background:var(--glow);color:#071018;
+  background:var(--glow);color:var(--on-glow);
   padding:.65rem 1.4rem;
   text-decoration:none;
   font-weight:600;
   border:1px solid var(--glow);
-  box-shadow:0 0 24px -6px rgba(95,212,255,.6);
+  box-shadow:0 0 24px -6px rgba(var(--glow-rgb),.6);
   transition:box-shadow .2s,transform .2s;
 }
-.btn:hover{box-shadow:0 0 32px -4px rgba(95,212,255,.85);transform:translateY(-1px)}
+.btn:hover{box-shadow:0 0 32px -4px rgba(var(--glow-rgb),.85);transform:translateY(-1px)}
 .updated{display:block;font-size:.85rem;color:var(--ink-60);margin-top:.45rem}
 
 /* ---------- programs ---------- */
 .programs{list-style:none;margin:0;padding:0;display:grid;gap:1.6rem}
 .programs li{display:grid;gap:.35rem;padding-left:1.1rem;border-left:2px solid var(--glow)}
 .programs h3{font-size:1.15rem;color:var(--ink)}
-.programs p{max-width:68ch;color:#C3CBD3;margin:0}
+.programs p{max-width:68ch;color:var(--ink-80);margin:0}
 .meta{font-size:.8rem;color:var(--ink-60);font-family:var(--mono)}
 .meta span + span::before{content:" / ";color:var(--rule)}
 
@@ -248,7 +268,7 @@ section > h2{
   background:var(--void);padding-right:.4rem;
 }
 .pub-title{font-family:var(--serif);font-weight:600;font-size:1.05rem;color:var(--ink);margin-bottom:.3rem}
-.pub-authors{color:#C3CBD3;margin-bottom:.3rem;font-size:.95rem}
+.pub-authors{color:var(--ink-80);margin-bottom:.3rem;font-size:.95rem}
 .pub-meta{font-family:var(--mono);font-size:.8rem;color:var(--ink-60);display:flex;flex-wrap:wrap;gap:0}
 .pub-meta span{display:inline-flex;align-items:center}
 .pub-meta span + span::before{content:" · ";color:var(--rule);margin:0 .4rem}
@@ -256,14 +276,14 @@ section > h2{
 
 .pubs-note{font-family:var(--mono);font-size:.8rem;letter-spacing:.04em;color:var(--ink-60);margin-top:2rem;margin-bottom:.75rem}
 .pubs-prep{list-style:none;margin:0;padding:0;display:grid;gap:.7rem}
-.pubs-prep li{font-size:.92rem;color:#8C97A6;padding-left:1rem;border-left:2px solid var(--rule)}
+.pubs-prep li{font-size:.92rem;color:var(--ink-60);padding-left:1rem;border-left:2px solid var(--rule)}
 
 /* ---------- skills ---------- */
 .skills{list-style:none;counter-reset:none;margin:0;padding:0;display:grid;gap:1rem}
 .skills li{
   display:flex;gap:1rem;align-items:baseline;
   padding-bottom:1rem;border-bottom:1px solid var(--rule);
-  color:#C3CBD3;
+  color:var(--ink-80);
 }
 .skills li:last-child{border-bottom:none;padding-bottom:0}
 .skills .rank{
@@ -273,6 +293,7 @@ section > h2{
 
 /* ---------- programs (addition) ---------- */
 .src-pending{font-family:var(--mono);font-size:.8rem;color:var(--ink-60);margin:0}
+.prog-shot{display:block;max-width:100%;height:auto;margin:.5rem 0;border:1px solid var(--rule)}
 
 
 /* ---------- structures slideshow ---------- */
@@ -301,11 +322,11 @@ section > h2{
 .slide-arrow{
   position:absolute;top:0;bottom:0;width:3rem;
   display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(180deg,rgba(10,13,18,.0),rgba(10,13,18,.0));
+  background:linear-gradient(180deg,rgba(var(--void-rgb),.0),rgba(var(--void-rgb),.0));
   border:0;color:var(--glow);font-size:1.8rem;cursor:pointer;
   transition:background .2s;
 }
-.slide-arrow:hover{background:rgba(95,212,255,.08)}
+.slide-arrow:hover{background:rgba(var(--glow-rgb),.08)}
 .slide-arrow.prev{left:0}
 .slide-arrow.next{right:0}
 
@@ -323,10 +344,160 @@ footer{
   max-width:1180px;margin:0 auto;
   font-size:.86rem;color:var(--ink-60);
 }
+
+/* ============================================================
+   THEMES — neon is the default (tokens above)
+   ============================================================ */
+.theme-switch{
+  position:fixed;top:.9rem;right:.9rem;z-index:60;
+  display:flex;
+  background:var(--panel);border:1px solid var(--rule);
+  box-shadow:0 6px 18px -8px rgba(0,0,0,.45);
+}
+.theme-switch button{
+  padding:.38rem .7rem;cursor:pointer;
+  background:transparent;color:var(--ink-60);border:0;
+  font:500 .75rem var(--mono);
+  transition:background .2s,color .2s;
+}
+.theme-switch button + button{border-left:1px solid var(--rule)}
+.theme-switch button:hover{color:var(--ink)}
+.theme-switch button[aria-pressed="true"]{background:var(--glow);color:var(--on-glow)}
+@media (max-width:860px){
+  body{padding-top:2.6rem}
+  .theme-switch{top:.6rem;right:.6rem}
+}
+
+/* ---------- professional: light, quiet, print-like ---------- */
+[data-theme="professional"]{
+  --void:#FFFFFF;
+  --panel:#F7F8FA;
+  --panel-2:#EEF1F5;
+  --ink:#16202C;
+  --ink-80:#3A4552;
+  --ink-60:#5E6977;
+  --ink-strong:#0E1620;
+  --glow:#1F4E8C;
+  --glow-dim:rgba(31,78,140,.3);
+  --glow-rgb:31,78,140;
+  --void-rgb:255,255,255;
+  --on-glow:#FFFFFF;
+  --ember:#8A4B12;
+  --rule:#DDE2E8;
+  --photo-filter:none;
+  --tab-font:var(--sans);
+}
+[data-theme="professional"] .tabs a{font-size:.98rem}
+[data-theme="professional"] .tabs a.is-active{text-shadow:none}
+[data-theme="professional"] .lattice,
+[data-theme="professional"] .beam{display:none}
+[data-theme="professional"] .portrait{box-shadow:none}
+[data-theme="professional"] .portrait::after{display:none}
+[data-theme="professional"] .btn,
+[data-theme="professional"] .btn:hover{box-shadow:none}
+[data-theme="professional"] .intro{background:var(--panel)}
+[data-theme="professional"] section > h2{font-family:var(--sans);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:.78rem}
+
+/* ---------- hacker: terminal green on black ---------- */
+[data-theme="hacker"]{
+  --void:#030603;
+  --panel:#071007;
+  --panel-2:#0A160B;
+  --ink:#B8F5C2;
+  --ink-80:#8FD69B;
+  --ink-60:#4F8F5A;
+  --ink-strong:#D9FFE0;
+  --glow:#39FF6A;
+  --glow-dim:rgba(57,255,106,.35);
+  --glow-rgb:57,255,106;
+  --void-rgb:3,6,3;
+  --on-glow:#021004;
+  --ember:#FFB000;
+  --rule:#143A1B;
+  --serif:var(--mono);
+  --sans:var(--mono);
+  --photo-filter:grayscale(1) contrast(1.15) brightness(.9);
+}
+[data-theme="hacker"] body{font-size:.95rem}
+[data-theme="hacker"] h1,[data-theme="hacker"] h2,[data-theme="hacker"] h3{letter-spacing:0}
+[data-theme="hacker"] .rail h1{font-size:1.45rem}
+[data-theme="hacker"] .rail h1::before{content:"> ";color:var(--glow)}
+[data-theme="hacker"] .portrait::after{
+  background:
+    repeating-linear-gradient(180deg,rgba(0,0,0,.35) 0 1px,transparent 1px 3px),
+    linear-gradient(rgba(57,255,106,.22),rgba(57,255,106,.22));
+  mix-blend-mode:normal;
+}
+[data-theme="hacker"] section > h2::before{content:"$ cat ";color:var(--glow)}
+[data-theme="hacker"] .intro .lede::after{
+  content:"_";margin-left:.15em;color:var(--glow);
+  animation:blink 1.05s steps(1) infinite;
+}
+@keyframes blink{50%{opacity:0}}
+[data-theme="hacker"] .tabs a.is-active::before{content:"[";}
+[data-theme="hacker"] .tabs a.is-active::after{content:"]";}
+[data-theme="hacker"] .btn{border-radius:0}
+[data-theme="hacker"] body::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:50;
+  background:repeating-linear-gradient(180deg,rgba(0,0,0,.18) 0 1px,transparent 1px 3px);
+}
+
+/* ---------- technique animations ---------- */
+.tech-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;margin-bottom:2rem}
+.tech-tile{
+  background:var(--panel);border:1px solid var(--rule);
+  padding:1rem 1.1rem 1.1rem;
+}
+.tech-plot{
+  display:block;width:100%;height:auto;
+  background-image:
+    linear-gradient(var(--rule) 1px,transparent 1px),
+    linear-gradient(90deg,var(--rule) 1px,transparent 1px);
+  background-size:20px 20px;background-position:-1px -1px;
+  border:1px solid var(--rule);
+}
+.tech-plot .trace{fill:none;stroke:var(--glow);stroke-width:1.6;stroke-linejoin:round;stroke-linecap:round;
+  filter:drop-shadow(0 0 3px var(--glow-dim))}
+.tech-plot .axis{stroke:var(--ink-60);stroke-width:.8}
+.tech-plot text{font:8px var(--mono);fill:var(--ink-60)}
+.tech-plot .tag{font-size:9px;fill:var(--glow);letter-spacing:.04em}
+.tech-plot .pulse{fill:var(--ember);opacity:0}
+.tech-acr{margin:.8rem 0 0;font:700 1.15rem var(--serif);color:var(--ink)}
+.tech-name{margin:.1rem 0 0;font-size:.85rem;color:var(--ink-60)}
+[data-theme="professional"] .tech-plot .trace{filter:none}
+.tech-plot .faint{fill:none;stroke:var(--ink-60);stroke-width:.8;opacity:.55}
+.tech-plot .dash{stroke:var(--ink-60);stroke-width:.7;stroke-dasharray:2 2}
+.tech-plot .lvl{fill:none;stroke:var(--ink);stroke-width:1.2}
+.tech-plot .cursor{stroke:var(--ember);stroke-width:.8;opacity:.8}
+.tech-plot .hv{stroke:var(--ember);stroke-width:1.6}
+.tech-plot .hv-head{fill:var(--ember)}
+.tech-plot .dot{fill:var(--ember)}
+.tech-plot .spot{fill:var(--ink-60)}
+.tech-plot .spot.hit{fill:var(--glow)}
+.tech-plot .beam-line{stroke:var(--ember);stroke-width:1.2}
+.tech-plot .glass{fill:none;stroke:var(--ink);stroke-width:1.1;opacity:.85}
+.tech-plot .pipe{stroke:var(--ink-60);stroke-width:3;stroke-linecap:round;opacity:.5}
+.tech-plot .pipe.on{stroke:var(--glow);opacity:1}
+.tech-plot .pipe.vac.on{stroke:var(--ember)}
+.tech-plot .mol{fill:var(--ink-60)}
+.tech-plot .mol.n2{fill:var(--glow)}
+.tech-plot .bub{fill:none;stroke:var(--glow);stroke-width:.7}
+.tech-plot .flow{fill:none;stroke:var(--glow);stroke-width:1.6;stroke-dasharray:1.4 4.6;stroke-linecap:round}
+.tech-plot .o2{fill:none;stroke:var(--ember);stroke-width:1.4}
+.tech-plot .h2o{fill:none;stroke:var(--glow);stroke-width:1.4}
+.tech-plot .small{font-size:6.5px}
+.tech-plot .door{stroke:var(--ink);stroke-width:1.4}
+
+
 </style>
 </head>
 
 <body>
+<div class="theme-switch" role="group" aria-label="Theme">
+  <button type="button" data-set-theme="professional">Professional</button>
+  <button type="button" data-set-theme="neon">Neon</button>
+  <button type="button" data-set-theme="hacker">Hacker</button>
+</div>
 <div class="shell">
 
   <!-- ==========================================================
@@ -335,11 +506,11 @@ footer{
        ========================================================== -->
   <aside class="rail">
     <div class="portrait">
-      <img src="images/photo.jpg" alt="Manuel Saucedo" onerror="this.remove()" onload="this.nextElementSibling.style.display='none'">
+      <img src="images/photo.jpg" alt="Manuel Alberto Saucedo Cañas" onerror="this.remove()" onload="this.nextElementSibling.style.display='none'">
       <div class="fallback">Add <code>images/photo.jpg</code></div>
     </div>
 
-    <h1>Manuel Saucedo Cañas</h1>
+    <h1>Manuel Alberto Saucedo Cañas</h1>
     <p class="role">Ph.D. student, <em>Fortier Laboratory</em><br>Chemistry &amp; Biochemistry, UTEP</p>
 
     <div class="contact">
@@ -360,17 +531,17 @@ footer{
   <main class="content">
 
     <nav class="tabs" aria-label="Sections">
-      <ul>
-        <li><a href="#about">About</a></li>
-        <li><a href="#cv">Curriculum vitae</a></li>
-        <li><a href="#publications">Publications</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#programs">Programs</a></li>
-        <li><a href="#structures">Crystal structures</a></li>
+      <ul role="tablist">
+        <li role="presentation"><a href="#about" role="tab" id="tab-about" aria-controls="about">About</a></li>
+        <li role="presentation"><a href="#cv" role="tab" id="tab-cv" aria-controls="cv">Curriculum vitae</a></li>
+        <li role="presentation"><a href="#publications" role="tab" id="tab-publications" aria-controls="publications">Publications</a></li>
+        <li role="presentation"><a href="#skills" role="tab" id="tab-skills" aria-controls="skills">Skills</a></li>
+        <li role="presentation"><a href="#programs" role="tab" id="tab-programs" aria-controls="programs">Programs</a></li>
+        <li role="presentation"><a href="#structures" role="tab" id="tab-structures" aria-controls="structures">Crystal structures</a></li>
       </ul>
     </nav>
 
-    <section id="about">
+    <section id="about" role="tabpanel" aria-labelledby="tab-about">
       <div class="intro">
         <div class="lattice" aria-hidden="true"></div>
         <div class="beam" aria-hidden="true"></div>
@@ -402,7 +573,7 @@ footer{
       </div>
     </section>
 
-    <section id="cv">
+    <section id="cv" role="tabpanel" aria-labelledby="tab-cv">
       <h2>Curriculum vitae</h2>
       <div class="cv">
         <p>Education, research and teaching experience, presentations, and awards — the
@@ -415,7 +586,7 @@ footer{
     <!-- ==========================================================
          PUBLICATIONS — ordered most recent first
          ========================================================== -->
-    <section id="publications">
+    <section id="publications" role="tabpanel" aria-labelledby="tab-publications">
       <h2>Publications</h2>
       <ol class="pubs">
         <li>
@@ -449,8 +620,167 @@ footer{
     <!-- ==========================================================
          SKILLS — flat list, ordered by strength (strongest first)
          ========================================================== -->
-    <section id="skills">
+    <section id="skills" role="tabpanel" aria-labelledby="tab-skills">
       <h2>Skills &amp; techniques</h2>
+      <div class="tech-grid">
+        <!-- NMR: RF pulse -> free induction decay -> Fourier transform -> 1H spectrum -->
+        <figure class="tech-tile" style="margin:0">
+          <svg class="tech-plot" id="nmr-anim" viewBox="0 0 300 120" role="img"
+               aria-label="Animation: a radio-frequency pulse produces a decaying FID signal, which Fourier-transforms into a proton NMR spectrum with a quartet and a triplet.">
+            <rect class="pulse" x="6" y="14" width="5" height="86"/>
+            <path class="trace" d=""/>
+            <line class="axis" x1="10" y1="104" x2="290" y2="104"/>
+            <g class="ticks"></g>
+            <text class="tag" x="288" y="14" text-anchor="end">FID</text>
+          </svg>
+          <figcaption>
+            <p class="tech-acr">NMR</p>
+            <p class="tech-name">Nuclear Magnetic Resonance</p>
+          </figcaption>
+        </figure>
+
+        <!-- scXRD: the crystal (reciprocal lattice) rotates; a reflection flashes when its point crosses the Ewald circle -->
+        <figure class="tech-tile" style="margin:0">
+          <svg class="tech-plot" id="xrd-anim" viewBox="0 0 300 120" role="img"
+               aria-label="Animation: a reciprocal lattice rotates through the Ewald circle; each lattice point flashes as a diffraction spot when it satisfies the Bragg condition.">
+            <defs><clipPath id="xrd-clip"><rect x="0" y="0" width="300" height="120"/></clipPath></defs>
+            <g clip-path="url(#xrd-clip)">
+              <line class="beam-line" x1="0" y1="60" x2="196" y2="60"/>
+              <circle class="faint ewald" cx="0" cy="60" r="0"/>
+              <g class="xrd-lattice"></g>
+            </g>
+            <text class="tag" x="288" y="14" text-anchor="end">φ = 0°</text>
+            <text x="12" y="56">beam</text>
+          </svg>
+          <figcaption>
+            <p class="tech-acr">scXRD</p>
+            <p class="tech-name">Single-Crystal X-Ray Diffraction</p>
+          </figcaption>
+        </figure>
+
+        <!-- EPR: field sweep. Top: Zeeman levels split with B; at resonance the gap equals hv.
+             Bottom: the first-derivative signal is recorded on the same field axis. -->
+        <figure class="tech-tile" style="margin:0">
+          <svg class="tech-plot" id="epr-anim" viewBox="0 0 300 120" role="img"
+               aria-label="Animation: the magnetic field is swept; the two electron spin levels split apart, and when their gap matches the microwave energy h-nu, the first-derivative EPR signal appears.">
+            <path class="lvl up" d=""/><path class="lvl dn" d=""/>
+            <text class="lab-up" x="0" y="0">+½</text>
+            <text class="lab-dn" x="0" y="0">−½</text>
+            <line class="hv" x1="0" y1="0" x2="0" y2="0" style="opacity:0"/>
+            <path class="trace" d=""/>
+            <line class="axis" x1="10" y1="112" x2="290" y2="112"/>
+            <line class="cursor" x1="10" y1="2" x2="10" y2="112"/>
+            <text x="290" y="108" text-anchor="end">B</text>
+            <text class="tag" x="14" y="14">B sweep</text>
+          </svg>
+          <figcaption>
+            <p class="tech-acr">EPR</p>
+            <p class="tech-name">Electron Paramagnetic Resonance</p>
+          </figcaption>
+        </figure>
+
+        <!-- CV: a real (simulated) reversible one-electron voltammogram drawn as the potential is swept -->
+        <figure class="tech-tile" style="margin:0">
+          <svg class="tech-plot" id="cv-anim" viewBox="0 0 300 120" role="img"
+               aria-label="Animation: the potential is swept positive then back; the current traces a reversible cyclic voltammogram with anodic and cathodic peaks about 59 millivolts apart.">
+            <line class="axis" x1="20" y1="60" x2="290" y2="60" style="opacity:.5"/>
+            <line class="axis" x1="20" y1="6" x2="20" y2="114"/>
+            <text x="24" y="12">i</text>
+            <text x="290" y="56" text-anchor="end">E</text>
+            <g class="peaks" style="opacity:0">
+              <line class="dash pa" x1="0" y1="6" x2="0" y2="114"/>
+              <line class="dash pc" x1="0" y1="6" x2="0" y2="114"/>
+              <text class="dep" x="0" y="112" text-anchor="middle"></text>
+            </g>
+            <path class="trace" d=""/>
+            <circle class="dot" r="2.4" cx="-10" cy="-10"/>
+            <text class="tag" x="288" y="14" text-anchor="end">anodic sweep →</text>
+          </svg>
+          <figcaption>
+            <p class="tech-acr">CV</p>
+            <p class="tech-name">Cyclic Voltammetry</p>
+          </figcaption>
+        </figure>
+
+        <!-- Schlenk line: three evacuate / N2-refill cycles on a flask, with the pressure trace -->
+        <figure class="tech-tile" style="margin:0">
+          <svg class="tech-plot" id="schlenk-anim" viewBox="0 0 300 120" role="img"
+               aria-label="Animation: a flask on a dual-manifold Schlenk line goes through three evacuate and nitrogen-refill cycles; air molecules are pumped out and replaced by nitrogen while a pressure trace records the cycles.">
+            <line class="pipe vac" x1="10" y1="12" x2="140" y2="12"/>
+            <line class="pipe gas" x1="10" y1="24" x2="140" y2="24"/>
+            <text x="12" y="9" class="small">vacuum</text>
+            <text x="12" y="34" class="small">N₂</text>
+            <line class="pipe stem" x1="70" y1="12" x2="70" y2="44"/>
+            <circle class="glass" cx="70" cy="38" r="4"/>
+            <line class="tap" x1="66" y1="38" x2="74" y2="38" stroke="var(--ink)" stroke-width="1.6"/>
+            <path class="glass" d="M66 44 V58 A22 22 0 1 0 74 58 V44"/>
+            <g class="mols"></g>
+            <!-- oil bubbler on the N2 manifold -->
+            <path class="glass" d="M140 24 H146 V44 M152 30 V48 H140 V30" />
+            <g class="bubs"></g>
+            <!-- pressure trace -->
+            <line class="axis" x1="172" y1="104" x2="290" y2="104"/>
+            <line class="axis" x1="172" y1="22" x2="172" y2="104"/>
+            <text x="176" y="30" class="small">P</text>
+            <text x="290" y="114" text-anchor="end" class="small">t</text>
+            <path class="trace" d=""/>
+            <text class="tag" x="288" y="14" text-anchor="end">cycle 1/3 · evacuate</text>
+          </svg>
+          <figcaption>
+            <p class="tech-acr">Schlenk</p>
+            <p class="tech-name">Air-Free Schlenk-Line Technique</p>
+          </figcaption>
+        </figure>
+
+        <!-- Glovebox: atmosphere circulates through the purifier; O2/H2O drop below 1 ppm,
+             spike on an antechamber transfer, and recover -->
+        <figure class="tech-tile" style="margin:0">
+          <svg class="tech-plot" id="gb-anim" viewBox="0 0 300 120" role="img"
+               aria-label="Animation: glovebox atmosphere circulates through the copper-catalyst and molecular-sieve purifier; oxygen and water readings fall below one part per million, spike briefly during an antechamber transfer, then recover.">
+            <!-- box: lid rail, window, glove ports, stand -->
+            <rect class="glass" x="8" y="9" width="88" height="5"/>
+            <rect class="glass" x="8" y="14" width="88" height="48"/>
+            <rect class="glass" x="12" y="17" width="80" height="42" rx="2" style="opacity:.45"/>
+            <circle class="glass" cx="33" cy="38" r="8.5" style="stroke-width:2.2"/>
+            <circle class="glass" cx="69" cy="38" r="8.5" style="stroke-width:2.2"/>
+            <line class="glass" x1="8" y1="64" x2="96" y2="64"/>
+            <path class="glass" d="M12 64 V110 M92 64 V110"/>
+            <path class="glass" d="M10 110 h5 M89 110 h5"/>
+            <!-- side wall flange + inner antechamber door -->
+            <line class="door inner" x1="97" y1="12" x2="97" y2="66"/>
+            <!-- control screen above the antechamber -->
+            <rect class="glass" x="104" y="17" width="24" height="15" rx="1.5"/>
+            <rect class="glass" x="107" y="20" width="14" height="9" style="opacity:.5"/>
+            <!-- main antechamber (cylinder) with outer door + handle, mini antechamber below -->
+            <rect class="glass ante" x="98" y="35" width="50" height="18" rx="2"/>
+            <line class="door outer" x1="150" y1="31" x2="150" y2="57"/>
+            <path class="glass" d="M150 44 l5 -4"/>
+            <rect class="glass" x="98" y="55" width="26" height="9" rx="2"/>
+            <line class="glass" x1="126" y1="53" x2="126" y2="66"/>
+            <!-- purifier cabinet (Cu catalyst + molecular sieves) under the antechamber -->
+            <rect class="glass" x="104" y="72" width="44" height="40" rx="1"/>
+            <line class="glass" x1="104" y1="77" x2="148" y2="77" style="opacity:.5"/>
+            <line class="glass" x1="104" y1="107" x2="148" y2="107" style="opacity:.5"/>
+            <text x="126" y="90" text-anchor="middle" class="small">purifier</text>
+            <text x="126" y="99" text-anchor="middle" class="small">Cu · sieves</text>
+            <!-- circulation: box -> purifier, purifier -> box -->
+            <path class="flow" d="M78 64 V84 H104"/>
+            <path class="flow" d="M104 102 H56 V64"/>
+            <text class="small" x="172" y="10"><tspan class="ro-o2" fill="var(--ember)">O₂ — ppm</tspan><tspan> · </tspan><tspan class="ro-h2o" fill="var(--glow)">H₂O — ppm</tspan></text>
+            <line class="axis" x1="172" y1="104" x2="290" y2="104"/>
+            <line class="axis" x1="172" y1="20" x2="172" y2="104"/>
+            <line class="dash" x1="172" y1="75" x2="290" y2="75"/>
+            <text x="288" y="72" text-anchor="end" class="small">1 ppm</text>
+            <path class="o2" d=""/>
+            <path class="h2o" d=""/>
+            <text class="tag" x="288" y="22" text-anchor="end">circulating</text>
+          </svg>
+          <figcaption>
+            <p class="tech-acr">Glovebox</p>
+            <p class="tech-name">Inert-Atmosphere Glovebox Operation &amp; Maintenance</p>
+          </figcaption>
+        </figure>
+      </div>
       <ol class="skills">
         <li><span class="rank">01</span> Single-crystal X-ray diffraction — independent, crystal growth through refinement (APEX4, SAINT, SADABS, SHELXL, Olex2, PLATON)</li>
         <li><span class="rank">02</span> Air-, moisture-, temperature-, and light-sensitive synthesis (Schlenk line, glovebox)</li>
@@ -466,7 +796,7 @@ footer{
     <!-- ==========================================================
          PROGRAMS — duplicate an <li> for each tool
          ========================================================== -->
-    <section id="programs">
+    <section id="programs" role="tabpanel" aria-labelledby="tab-programs">
       <h2>Programs I've written</h2>
       <ul class="programs">
         <li>
@@ -490,6 +820,17 @@ footer{
             parameters into simulation-ready code.</p>
           <p class="src-pending">Available upon request — still in beta</p>
         </li>
+        <li>
+          <h3>ORTEP crystal structure visualizer</h3>
+          <p class="meta"><span>Python</span><span>customtkinter</span><span>POV-Ray export</span></p>
+          <p>Opens .cif, .ins, and .res files and draws structures in ORTEP style with
+            thermal ellipsoids. Exports publication-quality images and rotating GIFs, with
+            shadows and reflections reserved for the final POV-Ray-style render so the live
+            view stays fast.</p>
+          <!-- Drop a screenshot at images/ortep-viewer.png and it appears here; if missing, this hides itself -->
+          <img class="prog-shot" src="images/ortep-viewer.png" alt="Screenshot of the ORTEP crystal structure visualizer" loading="lazy" onerror="this.remove()">
+          <p class="src-pending">In development</p>
+        </li>
       </ul>
     </section>
 
@@ -499,7 +840,7 @@ footer{
          and paste it right after this one, inside .slide-viewport,
          before the arrow buttons. First slide should keep is-active.
          ========================================================== -->
-    <section id="structures">
+    <section id="structures" role="tabpanel" aria-labelledby="tab-structures">
       <h2>Crystal structures</h2>
       <p style="max-width:68ch;margin-bottom:1.5rem">Solid-state structures from my work,
         rendered with thermal ellipsoids at 50% probability.</p>
@@ -592,36 +933,397 @@ footer{
   var tabsBar = document.querySelector('.tabs');
   if(!tabLinks.length || !tabsBar) return;
 
-  var sections = tabLinks.map(function(a){
-    return document.querySelector(a.getAttribute('href'));
+  var ids = tabLinks.map(function(a){ return a.getAttribute('href').slice(1); });
+  var panels = ids.map(function(id){ return document.getElementById(id); });
+  document.documentElement.classList.add('js-tabs');
+
+  function select(id, focusTab){
+    if(ids.indexOf(id) === -1) id = ids[0];
+    tabLinks.forEach(function(a, i){
+      var on = ids[i] === id;
+      a.classList.toggle('is-active', on);
+      a.setAttribute('aria-selected', on ? 'true' : 'false');
+      a.tabIndex = on ? 0 : -1;
+      if(on && focusTab) a.focus();
+    });
+    panels.forEach(function(p, i){ if(p) p.classList.toggle('is-current', ids[i] === id); });
+    document.documentElement.classList.toggle('on-about', id === 'about');
+  }
+
+  function fromHash(){ return decodeURIComponent(location.hash.slice(1)); }
+
+  tabLinks.forEach(function(a, i){
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      if(location.hash !== '#' + ids[i]) history.pushState(null, '', '#' + ids[i]);
+      select(ids[i]);
+      // keep the tab bar in view if the reader had scrolled down
+      var top = tabsBar.getBoundingClientRect().top + window.pageYOffset;
+      if(window.pageYOffset > top) window.scrollTo(0, top);
+    });
+    // arrow-key navigation between tabs
+    a.addEventListener('keydown', function(e){
+      var n = null;
+      if(e.key === 'ArrowRight') n = (i + 1) % ids.length;
+      else if(e.key === 'ArrowLeft') n = (i - 1 + ids.length) % ids.length;
+      else if(e.key === 'Home') n = 0;
+      else if(e.key === 'End') n = ids.length - 1;
+      if(n === null) return;
+      e.preventDefault();
+      history.replaceState(null, '', '#' + ids[n]);
+      select(ids[n], true);
+    });
   });
 
-  function setActive(id){
-    tabLinks.forEach(function(a){
-      a.classList.toggle('is-active', a.getAttribute('href') === '#' + id);
+  window.addEventListener('popstate', function(){ select(fromHash()); });
+  window.addEventListener('hashchange', function(){ select(fromHash()); });
+  select(fromHash());
+})();
+</script>
+<script>
+(function(){
+  var root = document.documentElement;
+  var btns = Array.prototype.slice.call(document.querySelectorAll('[data-set-theme]'));
+  function apply(t){
+    root.setAttribute('data-theme', t);
+    btns.forEach(function(b){ b.setAttribute('aria-pressed', b.getAttribute('data-set-theme') === t ? 'true' : 'false'); });
+  }
+  btns.forEach(function(b){
+    b.addEventListener('click', function(){
+      var t = b.getAttribute('data-set-theme');
+      apply(t);
+      try{ localStorage.setItem('site-theme', t); }catch(e){}
     });
-  }
+  });
+  apply(root.getAttribute('data-theme') || 'professional');
+})();
+</script>
+<script>
+/* NMR tile: pulse -> FID (time domain) -> FT -> spectrum (frequency domain).
+   The FID is built from the same lines the spectrum shows, so the morph is the real transform pair. */
+(function(){
+  var svg = document.getElementById('nmr-anim');
+  if(!svg) return;
+  var path = svg.querySelector('.trace'), tag = svg.querySelector('.tag'),
+      pulse = svg.querySelector('.pulse'), ticks = svg.querySelector('.ticks');
+  var X0 = 10, X1 = 290, BASE = 100, TOP = 18, N = 900;
+  var PPM_L = 9, PPM_R = 0;              // NMR axis runs high -> low ppm
 
-  function measure(){
-    var offset = tabsBar.offsetHeight + 24;
-    document.documentElement.style.setProperty('--tabs-offset', offset + 'px');
-    return offset;
-  }
+  // ethyl-type pattern: quartet 1:3:3:1 at 3.6 ppm, triplet 1:2:1 at 1.2 ppm, singlet at 7.26 ppm
+  var J = 0.13, lines = [];
+  [[1,3,3,1]].forEach(function(q){ q.forEach(function(a,i){ lines.push({ppm:3.6 + (i-1.5)*J, a:a*2/3}); }); });
+  [1,2,1].forEach(function(a,i){ lines.push({ppm:1.2 + (i-1)*J, a:a}); });
+  lines.push({ppm:7.26, a:1.1});
 
-  function onScroll(){
-    var offset = measure();
-    var current = sections[0];
-    for(var i = 0; i < sections.length; i++){
-      var sec = sections[i];
-      if(!sec) continue;
-      if(sec.getBoundingClientRect().top - offset <= 1) current = sec;
+  // frequency-domain spectrum (Lorentzians) sampled across the ppm axis
+  var W = 0.014, spec = [], fid = [], i, k, x, v;
+  for(i = 0; i < N; i++){
+    var ppm = PPM_L + (PPM_R - PPM_L) * i / (N - 1);
+    v = 0;
+    for(k = 0; k < lines.length; k++){ var d = ppm - lines[k].ppm; v += lines[k].a * W*W / (d*d + W*W); }
+    spec.push(v);
+  }
+  // time-domain FID: sum of decaying cosines at the same line positions (offset from a carrier)
+  for(i = 0; i < N; i++){
+    var t = i / (N - 1); v = 0;
+    for(k = 0; k < lines.length; k++) v += lines[k].a * Math.cos(2*Math.PI * (lines[k].ppm - 4.4) * 5.5 * t);
+    fid.push(v * Math.exp(-t / 0.28));
+  }
+  function norm(a, lo){ var m = 0; a.forEach(function(y){ m = Math.max(m, Math.abs(y)); }); return a.map(function(y){ return y / m; }); }
+  spec = norm(spec); fid = norm(fid);
+
+  var H = BASE - TOP;
+  function yFid(i){ return (BASE + TOP) / 2 - fid[i] * H / 2; }   // centred on a mid baseline
+  function ySpec(i){ return BASE - spec[i] * H; }
+  function xAt(i){ return X0 + (X1 - X0) * i / (N - 1); }
+
+  // ppm ticks (revealed in the spectrum phase)
+  [8,6,4,2,0].forEach(function(p){
+    var xx = X0 + (X1 - X0) * (PPM_L - p) / (PPM_L - PPM_R);
+    ticks.insertAdjacentHTML('beforeend',
+      '<line class="axis" x1="'+xx+'" y1="104" x2="'+xx+'" y2="107"/>' +
+      '<text x="'+xx+'" y="116" text-anchor="middle">'+p+'</text>');
+  });
+  ticks.insertAdjacentHTML('beforeend','<text x="290" y="116" text-anchor="end" dx="0" style="display:none">ppm</text>');
+
+  function draw(count, m){
+    var e = m*m*(3 - 2*m), d = '';                 // smoothstep for the morph
+    for(var i = 0; i < count; i++){
+      var y = (1 - e) * yFid(i) + e * ySpec(i);
+      d += (i ? 'L' : 'M') + xAt(i).toFixed(1) + ' ' + y.toFixed(1);
     }
-    if(current) setActive(current.id);
+    path.setAttribute('d', d);
   }
 
-  window.addEventListener('scroll', onScroll, {passive:true});
-  window.addEventListener('resize', onScroll);
-  onScroll();
+  // timeline (ms): pulse, acquire FID, hold, FT morph, hold spectrum, fade out
+  var T = {pulse:350, acq:1900, hold1:500, ft:1100, hold2:2600, fade:500};
+  var total = 0; for(var key in T) total += T[key];
+
+  function frame(now){
+    var t = now % total, phase;
+    pulse.style.opacity = 0; path.style.opacity = 1; ticks.style.opacity = 0;
+    if(t < T.pulse){ pulse.style.opacity = Math.sin(Math.PI * t / T.pulse); draw(0,0); tag.textContent = 'RF pulse'; }
+    else if((t -= T.pulse) < T.acq){ draw(Math.max(2, Math.round(N * t / T.acq)), 0); tag.textContent = 'FID'; }
+    else if((t -= T.acq) < T.hold1){ draw(N, 0); tag.textContent = 'FID'; }
+    else if((t -= T.hold1) < T.ft){ var m = t / T.ft; draw(N, m); ticks.style.opacity = m; tag.textContent = 'FT'; }
+    else if((t -= T.ft) < T.hold2){ draw(N, 1); ticks.style.opacity = 1; tag.textContent = '¹H spectrum'; }
+    else { t -= T.hold2; draw(N, 1); var o = 1 - t / T.fade; path.style.opacity = o; ticks.style.opacity = o; tag.textContent = '¹H spectrum'; }
+  }
+
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){ draw(N, 1); ticks.style.opacity = 1; tag.textContent = '¹H spectrum'; return; }
+
+  // only animate while the tile is on screen (it lives in a tab that is often hidden)
+  var running = false, raf = 0, start = 0;
+  function loop(now){ if(!start) start = now; frame(now - start); raf = requestAnimationFrame(loop); }
+  function setRunning(on){
+    if(on === running) return; running = on;
+    if(on){ start = 0; raf = requestAnimationFrame(loop); } else cancelAnimationFrame(raf);
+  }
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){ setRunning(es[0].isIntersecting); }).observe(svg);
+  } else setRunning(true);
+})();
+</script>
+<script>
+/* shared runner: animate only while on screen; static frame for reduced motion */
+function techAnim(svg, frame, still, period){
+  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){ still(); return; }
+  var running = false, raf = 0, start = 0;
+  function loop(now){ if(!start) start = now; frame(((now - start) % period) / period, now - start); raf = requestAnimationFrame(loop); }
+  function set(on){ if(on === running) return; running = on; if(on){ start = 0; raf = requestAnimationFrame(loop); } else cancelAnimationFrame(raf); }
+  if('IntersectionObserver' in window) new IntersectionObserver(function(es){ set(es[0].isIntersecting); }).observe(svg);
+  else set(true);
+}
+
+/* ---------- scXRD: rotating reciprocal lattice vs. Ewald circle (2-D section) ---------- */
+(function(){
+  var svg = document.getElementById('xrd-anim'); if(!svg) return;
+  var NS = 'http://www.w3.org/2000/svg';
+  var O = {x:196, y:60}, R = 80;                         // origin of reciprocal space sits on the circle
+  var C = {x:O.x - R, y:O.y};                            // Ewald circle centre, beam travels +x
+  var ew = svg.querySelector('.ewald'); ew.setAttribute('cx', C.x); ew.setAttribute('r', R);
+  var g = svg.querySelector('.xrd-lattice'), tag = svg.querySelector('.tag');
+  var a = 17, b = 21, gam = 78 * Math.PI/180;            // oblique cell: a*, b*, gamma*
+  var pts = [];
+  function hash(h,k){ var v = Math.sin(h*12.9898 + k*78.233) * 43758.5453; return v - Math.floor(v); }
+  for(var h = -9; h <= 9; h++) for(var k = -7; k <= 7; k++){
+    var x = h*a + k*b*Math.cos(gam), y = k*b*Math.sin(gam);
+    if(Math.hypot(x,y) > 2*R || (h === 0 && k === 0)) continue;   // inside the limiting circle
+    var I = 0.25 + 0.75*hash(h,k)*hash(h,k);                      // pseudo-random |F|^2
+    var el = document.createElementNS(NS,'circle'); el.setAttribute('class','spot');
+    g.appendChild(el); pts.push({x:x, y:y, I:I, el:el, glow:0});
+  }
+  var origin = document.createElementNS(NS,'circle');
+  origin.setAttribute('cx',O.x); origin.setAttribute('cy',O.y); origin.setAttribute('r',2.2); origin.setAttribute('class','spot hit');
+  g.appendChild(origin);
+  var last = 0;
+  function place(phi, dt){
+    var c = Math.cos(phi), s = Math.sin(phi);
+    for(var i = 0; i < pts.length; i++){
+      var p = pts[i], X = O.x + p.x*c - p.y*s, Y = O.y + p.x*s + p.y*c;
+      var d = Math.abs(Math.hypot(X - C.x, Y - C.y) - R);
+      if(d < 2.4) p.glow = 1;                             // Bragg condition met
+      p.glow = Math.max(0, p.glow - dt/900);
+      p.el.setAttribute('cx', X.toFixed(1)); p.el.setAttribute('cy', Y.toFixed(1));
+      p.el.setAttribute('r', (1.4 + p.glow*(1.4 + 2.4*p.I)).toFixed(2));
+      p.el.classList.toggle('hit', p.glow > 0.05);
+      p.el.style.opacity = (0.55 + 0.45*p.glow).toFixed(2);
+    }
+  }
+  techAnim(svg, function(f, ms){
+    var dt = Math.min(64, ms - last); last = ms; if(dt < 0) dt = 16;
+    var phi = f * 2*Math.PI;
+    place(phi, dt);
+    tag.textContent = 'φ = ' + Math.round(phi*180/Math.PI) + '°';
+  }, function(){ place(0.6, 0); tag.textContent = 'reciprocal lattice'; }, 14000);
+})();
+
+/* ---------- EPR: Zeeman splitting + first-derivative line on a shared field axis ---------- */
+(function(){
+  var svg = document.getElementById('epr-anim'); if(!svg) return;
+  var X0 = 10, X1 = 290, MID = 31, K = 0.088, HV = 34;   // levels: MID -/+ K*(x-X0); resonance where gap = HV
+  var XR = X0 + HV/(2*K), BASE = 86, AMP = 22, W = 7, XL = 272;
+  var lu = svg.querySelector('.lab-up'), ld = svg.querySelector('.lab-dn');
+  lu.setAttribute('x', XL + 4); lu.setAttribute('y', (MID - K*(XL - X0) + 3).toFixed(1));
+  ld.setAttribute('x', XL + 4); ld.setAttribute('y', (MID + K*(XL - X0) + 3).toFixed(1));
+  var up = svg.querySelector('.up'), dn = svg.querySelector('.dn'), tr = svg.querySelector('.trace'),
+      cur = svg.querySelector('.cursor'), hv = svg.querySelector('.hv'), tag = svg.querySelector('.tag');
+  // first derivative of a Lorentzian absorption, normalised to +/-1
+  function dL(x){ var u = (x - XR)/W; return -2*u/Math.pow(1 + u*u, 2) / 0.6495; }
+  function levels(xe){
+    up.setAttribute('d','M'+X0+' '+MID+' L'+xe+' '+(MID - K*(xe - X0)).toFixed(1));
+    dn.setAttribute('d','M'+X0+' '+MID+' L'+xe+' '+(MID + K*(xe - X0)).toFixed(1));
+  }
+  function trace(xe){
+    var d = '';
+    for(var x = X0; x <= xe; x += 0.7) d += (x === X0 ? 'M' : 'L') + x.toFixed(1) + ' ' + (BASE - AMP*dL(x)).toFixed(1);
+    tr.setAttribute('d', d);
+  }
+  function arrow(on, x){
+    hv.style.opacity = on;
+    hv.setAttribute('x1', x); hv.setAttribute('x2', x);
+    hv.setAttribute('y1', (MID + K*(x - X0)).toFixed(1)); hv.setAttribute('y2', (MID - K*(x - X0)).toFixed(1));
+  }
+  var SWEEP = 0.72, HOLD = 0.93;
+  techAnim(svg, function(f){
+    var p = Math.min(1, f/SWEEP), x = X0 + (X1 - X0)*p;
+    levels(XL); trace(x);
+    cur.setAttribute('x1', x); cur.setAttribute('x2', x); cur.style.opacity = f < SWEEP ? .8 : 0;
+    var near = Math.max(0, 1 - Math.abs(x - XR)/14);
+    arrow(f < SWEEP ? near : 0, f < SWEEP ? x : XR);
+    tag.textContent = near > 0.3 && f < SWEEP ? 'ΔE = hν  (resonance)' : (f < SWEEP ? 'B sweep' : 'first-derivative signal');
+    tr.style.opacity = f < HOLD ? 1 : 1 - (f - HOLD)/(1 - HOLD);
+  }, function(){ levels(XL); trace(X1); cur.style.opacity = 0; arrow(1, XR); tag.textContent = 'ΔE = hν = gμB·B'; }, 7000);
+})();
+
+/* ---------- CV: explicit finite-difference simulation of a reversible 1e- couple (Nernstian surface, equal D) ---------- */
+(function(){
+  var svg = document.getElementById('cv-anim'); if(!svg) return;
+  var tr = svg.querySelector('.trace'), dot = svg.querySelector('.dot'), tag = svg.querySelector('.tag'),
+      peaks = svg.querySelector('.peaks');
+  var data = null;
+  function simulate(){
+    var F = 38.92, n = 300, lam = 0.45, k = 20, M = 1200*k, c = new Float64Array(n), E, i, j, out = [];
+    for(i = 0; i < n; i++) c[i] = 1;                    // all reduced form at start; E from -0.3 V to +0.3 V and back
+    var nx = new Float64Array(n);
+    for(j = 0; j < M; j++){
+      var t = j / k; E = t < 600 ? -0.3 + t/1000 : 0.3 - (t - 600)/1000;
+      c[0] = 1/(1 + Math.exp(F*E));
+      for(i = 1; i < n - 1; i++) nx[i] = c[i] + lam*(c[i+1] - 2*c[i] + c[i-1]);
+      for(i = 1; i < n - 1; i++) c[i] = nx[i];
+      c[0] = 1/(1 + Math.exp(F*E));
+      if(j % 5 === 0) out.push({E:E, I:(-3*c[0] + 4*c[1] - c[2])/2});
+    }
+    var m = 0; out.forEach(function(p){ m = Math.max(m, Math.abs(p.I)); });
+    var h = out.length/2, ia = 0, ic = h;
+    for(i = 0; i < h; i++) if(out[i].I > out[ia].I) ia = i;
+    for(i = h; i < out.length; i++) if(out[i].I < out[ic].I) ic = i;
+    return {pts: out.map(function(p){ return {x: 20 + (p.E + 0.3)/0.6*262, y: 60 - p.I/m*46}; }),
+            ia: ia, ic: ic, dEp: Math.round(1000*(out[ia].E - out[ic].E))};
+  }
+  function setup(){
+    if(data) return; data = simulate();
+    var xa = data.pts[data.ia].x, xc = data.pts[data.ic].x;
+    var pa = peaks.querySelector('.pa'), pc = peaks.querySelector('.pc'), lab = peaks.querySelector('.dep');
+    pa.setAttribute('x1', xa); pa.setAttribute('x2', xa); pc.setAttribute('x1', xc); pc.setAttribute('x2', xc);
+    lab.setAttribute('x', (xa + 4).toFixed(1)); lab.setAttribute('text-anchor','start'); lab.textContent = 'ΔEp ≈ ' + data.dEp + ' mV';
+  }
+  function draw(count){
+    var d = '', P = data.pts;
+    for(var i = 0; i < count; i++) d += (i ? 'L' : 'M') + P[i].x.toFixed(1) + ' ' + P[i].y.toFixed(1);
+    tr.setAttribute('d', d);
+    var q = P[Math.max(0, count - 1)]; dot.setAttribute('cx', q.x.toFixed(1)); dot.setAttribute('cy', q.y.toFixed(1));
+  }
+  var DRAW = 0.7, HOLD = 0.93;
+  techAnim(svg, function(f){
+    setup();
+    var n = data.pts.length, cnt = Math.max(2, Math.round(n * Math.min(1, f/DRAW)));
+    draw(cnt);
+    tag.textContent = f >= DRAW ? 'reversible, 1 e⁻' : (cnt < n/2 ? 'anodic sweep →' : '← cathodic sweep');
+    dot.style.opacity = f < DRAW ? 1 : 0;
+    peaks.style.opacity = f < DRAW ? 0 : Math.min(1, (f - DRAW)/0.06);
+    var o = f < HOLD ? 1 : 1 - (f - HOLD)/(1 - HOLD);
+    tr.style.opacity = o; peaks.style.opacity = Math.min(peaks.style.opacity, o);
+  }, function(){ setup(); draw(data.pts.length); dot.style.opacity = 0; peaks.style.opacity = 1; tag.textContent = 'reversible, 1 e⁻'; }, 8000);
+})();
+</script>
+<script>
+/* ---------- Schlenk line: evacuate / refill x3 ---------- */
+(function(){
+  var svg = document.getElementById('schlenk-anim'); if(!svg) return;
+  var NS = 'http://www.w3.org/2000/svg';
+  var vac = svg.querySelector('.vac'), gas = svg.querySelector('.gas'), stem = svg.querySelector('.stem'),
+      tap = svg.querySelector('.tap'), tr = svg.querySelector('.trace'), tag = svg.querySelector('.tag'),
+      mg = svg.querySelector('.mols'), bg = svg.querySelector('.bubs');
+  var CX = 70, CY = 78, R = 18, NECK = {x:70, y:46};
+  var mols = [], i;
+  function rnd(n){ var v = Math.sin(n*91.7 + 3.1)*43758.5; return v - Math.floor(v); }
+  for(i = 0; i < 30; i++){
+    var a = rnd(i)*2*Math.PI, r = Math.sqrt(rnd(i + 50))*(R - 3);
+    var c = document.createElementNS(NS,'circle'); c.setAttribute('r', 1.5); mg.appendChild(c);
+    mols.push({hx: CX + r*Math.cos(a), hy: CY + r*Math.sin(a), u: (i + 0.5)/30, el: c});
+  }
+  var bubs = [];
+  for(i = 0; i < 3; i++){ var b = document.createElementNS(NS,'circle'); b.setAttribute('class','bub'); b.setAttribute('cx', 143); b.setAttribute('r', 1.4); bg.appendChild(b); bubs.push(b); }
+
+  var CYC = 0.28, EV = 0.17, END = 3*CYC;            // fraction of the loop
+  function state(f){                                  // -> {cycle, mode, P}
+    if(f >= END) return {cycle: 3, mode: 'hold', P: 1};
+    var c = Math.floor(f/CYC), g = f - c*CYC;
+    if(g < EV) return {cycle: c, mode: 'evac', P: 0.02 + 0.98*Math.exp(-g/0.05), g: g};
+    return {cycle: c, mode: 'fill', P: 1 - 0.98*Math.exp(-(g - EV)/0.012)};
+  }
+  function xT(f){ return 172 + 116*f; }
+  function yP(P){ return 104 - 76*P; }
+
+  function render(f, ms){
+    var st = state(f);
+    vac.classList.toggle('on', st.mode === 'evac');
+    gas.classList.toggle('on', st.mode !== 'evac');
+    stem.classList.toggle('on', st.mode !== 'hold'); stem.classList.toggle('vac', st.mode === 'evac');
+    // stopcock: horizontal = closed, angled one way for vacuum, the other for N2
+    var ang = st.mode === 'evac' ? -45 : (st.mode === 'fill' ? 45 : 0);
+    tap.setAttribute('transform', 'rotate(' + ang + ' 70 38)');
+    var n2 = !(st.cycle === 0 && st.mode === 'evac');
+    mols.forEach(function(m, k){
+      var al = Math.max(0, Math.min(1, (st.P - m.u)/0.08));
+      var jx = Math.sin(ms/260 + k*1.7)*1.2, jy = Math.cos(ms/310 + k*2.3)*1.2;
+      var x = NECK.x + (m.hx - NECK.x)*al + jx*al, y = NECK.y + (m.hy - NECK.y)*al + jy*al;
+      m.el.setAttribute('cx', x.toFixed(1)); m.el.setAttribute('cy', y.toFixed(1));
+      m.el.style.opacity = al.toFixed(2);
+      m.el.setAttribute('class', 'mol' + (n2 ? ' n2' : ''));
+    });
+    // bubbler bubbles whenever N2 is venting through it (i.e. not while it is refilling the flask)
+    var bubbling = st.mode !== 'fill';
+    bubs.forEach(function(b, k){
+      var t = ((ms/900) + k/3) % 1;
+      b.setAttribute('cy', (47 - t*16).toFixed(1));
+      b.style.opacity = bubbling ? (1 - t).toFixed(2) : 0;
+    });
+    // pressure trace up to now
+    var d = '', lim = Math.min(f, 0.999);
+    for(var q = 0; q <= lim; q += 0.0025) d += (q ? 'L' : 'M') + xT(q).toFixed(1) + ' ' + yP(state(q).P).toFixed(1);
+    tr.setAttribute('d', d);
+    tag.textContent = st.mode === 'hold' ? 'under N₂ · ready' :
+      'cycle ' + (st.cycle + 1) + '/3 · ' + (st.mode === 'evac' ? 'evacuate' : 'refill N₂');
+  }
+  techAnim(svg, render, function(){ render(0.99, 0); }, 10000);
+})();
+
+/* ---------- Glovebox: purifier circulation, O2/H2O readout, antechamber spike ---------- */
+(function(){
+  var svg = document.getElementById('gb-anim'); if(!svg) return;
+  var flows = svg.querySelectorAll('.flow'), o2 = svg.querySelector('.o2'), h2o = svg.querySelector('.h2o'),
+      ro1 = svg.querySelector('.ro-o2'), ro2 = svg.querySelector('.ro-h2o'), tag = svg.querySelector('.tag'),
+      ante = svg.querySelector('.ante'), inner = svg.querySelector('.inner'), outer = svg.querySelector('.outer');
+  var FS = 0.5;                                         // antechamber transfer
+  function spike(f, A){ if(f < FS) return 0; var t = f - FS; return A*(1 - Math.exp(-t/0.008))*Math.exp(-t/0.07); }
+  function ppm(f){
+    return { o2: 0.4 + 40*Math.exp(-f/0.08) + spike(f, 3.2),
+             h2o: 0.25 + 22*Math.exp(-f/0.1) + spike(f, 1.8) };
+  }
+  function xT(f){ return 172 + 116*f; }
+  function yL(v){ return 104 - (Math.log(v)/Math.LN10 + 1)/3*84; }   // log axis, 0.1 -> 100 ppm
+  function render(f, ms){
+    flows.forEach(function(p){ p.style.strokeDashoffset = (-ms/45).toFixed(1); });
+    var d1 = '', d2 = '', lim = Math.min(f, 0.999);
+    for(var q = 0; q <= lim; q += 0.003){
+      var v = ppm(q), x = xT(q).toFixed(1);
+      d1 += (q ? 'L' : 'M') + x + ' ' + yL(v.o2).toFixed(1);
+      d2 += (q ? 'L' : 'M') + x + ' ' + yL(v.h2o).toFixed(1);
+    }
+    o2.setAttribute('d', d1); h2o.setAttribute('d', d2);
+    var v = ppm(f);
+    ro1.textContent = 'O₂ ' + v.o2.toFixed(1) + ' ppm'; ro2.textContent = 'H₂O ' + v.h2o.toFixed(1) + ' ppm';
+    var transfer = f > FS - 0.06 && f < FS + 0.03;
+    ante.style.stroke = transfer ? 'var(--ember)' : '';
+    outer.style.opacity = f > FS - 0.06 && f < FS - 0.035 ? 0 : 1;   // load from outside (after evacuate/refill)
+    inner.style.opacity = f > FS - 0.005 && f < FS + 0.025 ? 0 : 1;  // open into the box
+    tag.textContent = transfer ? 'antechamber transfer' : (f < 0.25 ? 'circulating · purging' :
+      (v.o2 < 1 && v.h2o < 1 ? 'O₂, H₂O < 1 ppm' : 'recovering'));
+  }
+  techAnim(svg, render, function(){ render(0.99, 0); }, 11000);
 })();
 </script>
 </body>
