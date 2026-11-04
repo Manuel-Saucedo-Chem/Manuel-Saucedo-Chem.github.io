@@ -61,6 +61,9 @@ a:hover{text-decoration-thickness:2px}
 
 h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;margin:0}
 p{margin:0 0 1rem}
+sup,sub{font-size:.72em;line-height:0;position:relative;vertical-align:baseline}
+sup{top:-.45em}
+sub{bottom:-.2em}
 p:last-child{margin-bottom:0}
 
 /* ============================================================
@@ -274,6 +277,9 @@ section > h2{
 .pub-meta span + span::before{content:" · ";color:var(--rule);margin:0 .4rem}
 .pub-meta a{color:var(--glow)}
 
+.pub-cite{font-size:.9rem;color:var(--ink-60);margin:0}
+.pub-cite b{color:var(--ink);font-weight:600}
+.pub-authors strong{color:var(--ink);font-weight:600}
 .pubs-note{font-family:var(--mono);font-size:.8rem;letter-spacing:.04em;color:var(--ink-60);margin-top:2rem;margin-bottom:.75rem}
 .pubs-prep{list-style:none;margin:0;padding:0;display:grid;gap:.7rem}
 .pubs-prep li{font-size:.92rem;color:var(--ink-60);padding-left:1rem;border-left:2px solid var(--rule)}
@@ -405,7 +411,7 @@ footer{
   --panel-2:#0A160B;
   --ink:#B8F5C2;
   --ink-80:#8FD69B;
-  --ink-60:#4F8F5A;
+  --ink-60:#62A86E;
   --ink-strong:#D9FFE0;
   --glow:#39FF6A;
   --glow-dim:rgba(57,255,106,.35);
@@ -428,7 +434,7 @@ footer{
     linear-gradient(rgba(57,255,106,.22),rgba(57,255,106,.22));
   mix-blend-mode:normal;
 }
-[data-theme="hacker"] section > h2::before{content:"$ cat ";color:var(--glow)}
+[data-theme="hacker"] section > h2::before{content:"$ ";color:var(--glow)}
 [data-theme="hacker"] .intro .lede::after{
   content:"_";margin-left:.15em;color:var(--glow);
   animation:blink 1.05s steps(1) infinite;
@@ -448,6 +454,33 @@ footer{
   background:var(--panel);border:1px solid var(--rule);
   padding:1rem 1.1rem 1.1rem;
 }
+.tech-tile{position:relative;overflow:hidden;cursor:default;outline-offset:2px}
+.tech-tile::after{
+  content:"i";position:absolute;bottom:.9rem;right:.9rem;
+  width:1rem;height:1rem;border-radius:50%;
+  border:1px solid var(--rule);color:var(--ink-60);
+  font:600 .62rem/1rem var(--mono);text-align:center;
+  transition:opacity .2s;
+}
+.tech-desc{
+  position:absolute;inset:0;margin:0;
+  display:flex;flex-direction:column;justify-content:center;align-items:stretch;
+  text-align:justify;hyphens:auto;-webkit-hyphens:auto;
+  padding:1.2rem 1.3rem;
+  background:var(--panel);color:var(--ink);
+  font-size:.95rem;line-height:1.5;
+  opacity:0;transform:translateY(8px);
+  transition:opacity .25s,transform .25s;
+  pointer-events:none;
+}
+.tech-tile:hover .tech-desc,.tech-tile:focus .tech-desc,.tech-tile:focus-within .tech-desc{opacity:1;transform:none}
+.tech-tile:hover::after,.tech-tile:focus::after{opacity:0}
+[data-theme="neon"] .tech-desc{border:1px solid var(--glow-dim);box-shadow:inset 0 0 30px -12px var(--glow-dim)}
+[data-theme="hacker"] .tech-desc::before{content:"$";color:var(--glow);margin-bottom:.5rem}
+.tech-hint{font-family:var(--mono);font-size:.75rem;color:var(--ink-60);margin:-1.4rem 0 2rem}
+.tech-plot .code text{font:6.5px var(--mono)}
+.tech-plot .pt{fill:var(--ink-60)}
+
 .tech-plot{
   display:block;width:100%;height:auto;
   background-image:
@@ -462,6 +495,7 @@ footer{
 .tech-plot text{font:8px var(--mono);fill:var(--ink-60)}
 .tech-plot .tag{font-size:9px;fill:var(--glow);letter-spacing:.04em}
 .tech-plot .pulse{fill:var(--ember);opacity:0}
+.tech-tile figcaption{padding-right:1.6rem}
 .tech-acr{margin:.8rem 0 0;font:700 1.15rem var(--serif);color:var(--ink)}
 .tech-name{margin:.1rem 0 0;font-size:.85rem;color:var(--ink-60)}
 [data-theme="professional"] .tech-plot .trace{filter:none}
@@ -487,6 +521,13 @@ footer{
 .tech-plot .h2o{fill:none;stroke:var(--glow);stroke-width:1.4}
 .tech-plot .small{font-size:6.5px}
 .tech-plot .door{stroke:var(--ink);stroke-width:1.4}
+.tech-plot .bond{stroke:var(--ink);stroke-width:1.1;stroke-linecap:round;fill:none}
+.tech-plot .atom-bg{fill:var(--panel)}
+.tech-plot .atom{font:600 8px var(--sans);fill:var(--ink)}
+.tech-plot .sub{font:6.5px var(--sans);fill:var(--ink-60)}
+.tech-plot .rxn-arrow{stroke:var(--ink-60);stroke-width:1;fill:none}
+.tech-plot .stage{opacity:0}
+
 
 
 </style>
@@ -591,18 +632,18 @@ footer{
       <ol class="pubs">
         <li>
           <p class="pub-title">Crystal and Molecular Structure of Guaiazulene and Its Potassium Crown Ether Salt: A Conglomerate</p>
-          <p class="pub-authors">I. Bernal, R. A. Lalancette, S. Fortier, M. Saucedo-Cañas, P. Kucheryavy</p>
-          <p class="pub-meta"><span>Cryst. Growth Des.</span><span>2025</span><span><a href="https://doi.org/10.1021/acs.cgd.4c01760">10.1021/acs.cgd.4c01760</a></span></p>
+          <p class="pub-authors">I. Bernal, R. A. Lalancette, S. Fortier, <strong>M. Saucedo-Cañas</strong>, P. Kucheryavy</p>
+          <p class="pub-cite"><i>Crystal Growth &amp; Design</i> <b>2025</b>, <i>25</i> (12), 4178–4184. DOI: <a href="https://doi.org/10.1021/acs.cgd.4c01760">10.1021/acs.cgd.4c01760</a></p>
         </li>
         <li>
           <p class="pub-title">Porphyrin-functionalized glassy carbon electrodes for electrochemical water splitting</p>
-          <p class="pub-authors">N. Ocuane, N. Jafari, J. Calvillo, M. Saucedo, D. Villagrán</p>
-          <p class="pub-meta"><span>Dalton Trans.</span><span>2025</span><span><a href="https://doi.org/10.1039/D5DT01390A">10.1039/D5DT01390A</a></span></p>
+          <p class="pub-authors">N. Ocuane, N. Jafari, J. J. Calvillo Solis, <strong>M. Saucedo</strong>, D. Villagrán</p>
+          <p class="pub-cite"><i>Dalton Transactions</i> <b>2025</b>, <i>54</i> (33), 12550–12556. DOI: <a href="https://doi.org/10.1039/D5DT01390A">10.1039/D5DT01390A</a></p>
         </li>
         <li>
-          <p class="pub-title">Low Cost Pencil Graphite Electrode for Sensitive Determination of Pb(II) and Cd(II)</p>
-          <p class="pub-authors">M. A. Saucedo, M. Galicia, K. A. Carrasco</p>
-          <p class="pub-meta"><span>ECS Trans.</span><span>2023</span><span><a href="https://doi.org/10.1149/11001.0255ecst">10.1149/11001.0255ecst</a></span></p>
+          <p class="pub-title">Low Cost Electrochemical PGE Platform for Sensitive Determination of Pb(II) and Cd(II)</p>
+          <p class="pub-authors"><strong>M. A. Saucedo Cañas</strong>, M. Galicia, K. A. Carrasco Urrutia</p>
+          <p class="pub-cite"><i>ECS Transactions</i> <b>2023</b>, <i>110</i> (1), 255–272. DOI: <a href="https://doi.org/10.1149/11001.0255ecst">10.1149/11001.0255ecst</a></p>
         </li>
       </ol>
 
@@ -623,118 +664,46 @@ footer{
     <section id="skills" role="tabpanel" aria-labelledby="tab-skills">
       <h2>Skills &amp; techniques</h2>
       <div class="tech-grid">
+        <!-- Organic / ligand synthesis: NHC + TMSN3 -> 2-(silylimino)imidazoline (ImN), then carbodiimide + LiNMe2 -> lithium guanidinate -->
+        <figure class="tech-tile" tabindex="0" style="margin:0">
+          <svg class="tech-plot" id="lig-anim" viewBox="0 0 300 120" role="img"
+               aria-label="Animation of two ligand syntheses: an N-heterocyclic carbene reacts with trimethylsilyl azide, losing nitrogen, to give a silylated imidazolin-2-imine; then a carbodiimide adds a lithium amide to give a lithium guanidinate.">
+            <g class="sA"></g><g class="sB"></g>
+            <text class="tag" x="288" y="14" text-anchor="end"></text>
+          </svg>
+          <figcaption>
+            <p class="tech-acr">Ligand synthesis</p>
+            <p class="tech-name">Organic Synthesis of Ancillary Ligands</p>
+          </figcaption>
+          <p class="tech-desc"><span>Design and synthesize ancillary ligands — NHC-based imidazolin-2-iminato and guanidinate — for early transition metal and iron complexes.</span></p>
+        </figure>
+
         <!-- NMR: RF pulse -> free induction decay -> Fourier transform -> 1H spectrum -->
-        <figure class="tech-tile" style="margin:0">
+        <figure class="tech-tile" tabindex="0" style="margin:0">
           <svg class="tech-plot" id="nmr-anim" viewBox="0 0 300 120" role="img"
-               aria-label="Animation: a radio-frequency pulse produces a decaying FID signal, which Fourier-transforms into a proton NMR spectrum with a quartet and a triplet.">
+               aria-label="Animation of an air-sensitive sample in C6D6: a radio-frequency pulse produces a decaying FID signal, which Fourier-transforms into a proton NMR spectrum with a quartet and a triplet.">
             <rect class="pulse" x="6" y="14" width="5" height="86"/>
             <path class="trace" d=""/>
             <line class="axis" x1="10" y1="104" x2="290" y2="104"/>
             <g class="ticks"></g>
             <text class="tag" x="288" y="14" text-anchor="end">FID</text>
+            <g class="airfree" transform="translate(96 4)">
+              <rect x="0" y="3" width="3.4" height="13" rx="1.7" fill="none" stroke="var(--ink-60)" stroke-width=".8"/>
+              <rect x="-0.6" y="0" width="4.6" height="3.2" rx=".6" fill="var(--ember)"/>
+              <rect x=".6" y="10" width="2.2" height="5.4" rx="1" fill="var(--glow)" opacity=".6"/>
+              <text x="7" y="11" style="font:6.5px var(--mono);fill:var(--ink-60)">air-sensitive sample · C₆D₆</text>
+            </g>
           </svg>
           <figcaption>
             <p class="tech-acr">NMR</p>
             <p class="tech-name">Nuclear Magnetic Resonance</p>
           </figcaption>
-        </figure>
-
-        <!-- scXRD: the crystal (reciprocal lattice) rotates; a reflection flashes when its point crosses the Ewald circle -->
-        <figure class="tech-tile" style="margin:0">
-          <svg class="tech-plot" id="xrd-anim" viewBox="0 0 300 120" role="img"
-               aria-label="Animation: a reciprocal lattice rotates through the Ewald circle; each lattice point flashes as a diffraction spot when it satisfies the Bragg condition.">
-            <defs><clipPath id="xrd-clip"><rect x="0" y="0" width="300" height="120"/></clipPath></defs>
-            <g clip-path="url(#xrd-clip)">
-              <line class="beam-line" x1="0" y1="60" x2="196" y2="60"/>
-              <circle class="faint ewald" cx="0" cy="60" r="0"/>
-              <g class="xrd-lattice"></g>
-            </g>
-            <text class="tag" x="288" y="14" text-anchor="end">φ = 0°</text>
-            <text x="12" y="56">beam</text>
-          </svg>
-          <figcaption>
-            <p class="tech-acr">scXRD</p>
-            <p class="tech-name">Single-Crystal X-Ray Diffraction</p>
-          </figcaption>
-        </figure>
-
-        <!-- EPR: field sweep. Top: Zeeman levels split with B; at resonance the gap equals hv.
-             Bottom: the first-derivative signal is recorded on the same field axis. -->
-        <figure class="tech-tile" style="margin:0">
-          <svg class="tech-plot" id="epr-anim" viewBox="0 0 300 120" role="img"
-               aria-label="Animation: the magnetic field is swept; the two electron spin levels split apart, and when their gap matches the microwave energy h-nu, the first-derivative EPR signal appears.">
-            <path class="lvl up" d=""/><path class="lvl dn" d=""/>
-            <text class="lab-up" x="0" y="0">+½</text>
-            <text class="lab-dn" x="0" y="0">−½</text>
-            <line class="hv" x1="0" y1="0" x2="0" y2="0" style="opacity:0"/>
-            <path class="trace" d=""/>
-            <line class="axis" x1="10" y1="112" x2="290" y2="112"/>
-            <line class="cursor" x1="10" y1="2" x2="10" y2="112"/>
-            <text x="290" y="108" text-anchor="end">B</text>
-            <text class="tag" x="14" y="14">B sweep</text>
-          </svg>
-          <figcaption>
-            <p class="tech-acr">EPR</p>
-            <p class="tech-name">Electron Paramagnetic Resonance</p>
-          </figcaption>
-        </figure>
-
-        <!-- CV: a real (simulated) reversible one-electron voltammogram drawn as the potential is swept -->
-        <figure class="tech-tile" style="margin:0">
-          <svg class="tech-plot" id="cv-anim" viewBox="0 0 300 120" role="img"
-               aria-label="Animation: the potential is swept positive then back; the current traces a reversible cyclic voltammogram with anodic and cathodic peaks about 59 millivolts apart.">
-            <line class="axis" x1="20" y1="60" x2="290" y2="60" style="opacity:.5"/>
-            <line class="axis" x1="20" y1="6" x2="20" y2="114"/>
-            <text x="24" y="12">i</text>
-            <text x="290" y="56" text-anchor="end">E</text>
-            <g class="peaks" style="opacity:0">
-              <line class="dash pa" x1="0" y1="6" x2="0" y2="114"/>
-              <line class="dash pc" x1="0" y1="6" x2="0" y2="114"/>
-              <text class="dep" x="0" y="112" text-anchor="middle"></text>
-            </g>
-            <path class="trace" d=""/>
-            <circle class="dot" r="2.4" cx="-10" cy="-10"/>
-            <text class="tag" x="288" y="14" text-anchor="end">anodic sweep →</text>
-          </svg>
-          <figcaption>
-            <p class="tech-acr">CV</p>
-            <p class="tech-name">Cyclic Voltammetry</p>
-          </figcaption>
-        </figure>
-
-        <!-- Schlenk line: three evacuate / N2-refill cycles on a flask, with the pressure trace -->
-        <figure class="tech-tile" style="margin:0">
-          <svg class="tech-plot" id="schlenk-anim" viewBox="0 0 300 120" role="img"
-               aria-label="Animation: a flask on a dual-manifold Schlenk line goes through three evacuate and nitrogen-refill cycles; air molecules are pumped out and replaced by nitrogen while a pressure trace records the cycles.">
-            <line class="pipe vac" x1="10" y1="12" x2="140" y2="12"/>
-            <line class="pipe gas" x1="10" y1="24" x2="140" y2="24"/>
-            <text x="12" y="9" class="small">vacuum</text>
-            <text x="12" y="34" class="small">N₂</text>
-            <line class="pipe stem" x1="70" y1="12" x2="70" y2="44"/>
-            <circle class="glass" cx="70" cy="38" r="4"/>
-            <line class="tap" x1="66" y1="38" x2="74" y2="38" stroke="var(--ink)" stroke-width="1.6"/>
-            <path class="glass" d="M66 44 V58 A22 22 0 1 0 74 58 V44"/>
-            <g class="mols"></g>
-            <!-- oil bubbler on the N2 manifold -->
-            <path class="glass" d="M140 24 H146 V44 M152 30 V48 H140 V30" />
-            <g class="bubs"></g>
-            <!-- pressure trace -->
-            <line class="axis" x1="172" y1="104" x2="290" y2="104"/>
-            <line class="axis" x1="172" y1="22" x2="172" y2="104"/>
-            <text x="176" y="30" class="small">P</text>
-            <text x="290" y="114" text-anchor="end" class="small">t</text>
-            <path class="trace" d=""/>
-            <text class="tag" x="288" y="14" text-anchor="end">cycle 1/3 · evacuate</text>
-          </svg>
-          <figcaption>
-            <p class="tech-acr">Schlenk</p>
-            <p class="tech-name">Air-Free Schlenk-Line Technique</p>
-          </figcaption>
+          <p class="tech-desc"><span>Acquire and interpret multinuclear NMR of air-sensitive samples (<sup>1</sup>H, <sup>2</sup>H, <sup>13</sup>C, <sup>7</sup>Li, <sup>11</sup>B, <sup>19</sup>F, <sup>29</sup>Si, <sup>31</sup>P) and 2D COSY/HSQC, including paramagnetic complexes.</span></p>
         </figure>
 
         <!-- Glovebox: atmosphere circulates through the purifier; O2/H2O drop below 1 ppm,
              spike on an antechamber transfer, and recover -->
-        <figure class="tech-tile" style="margin:0">
+        <figure class="tech-tile" tabindex="0" style="margin:0">
           <svg class="tech-plot" id="gb-anim" viewBox="0 0 300 120" role="img"
                aria-label="Animation: glovebox atmosphere circulates through the copper-catalyst and molecular-sieve purifier; oxygen and water readings fall below one part per million, spike briefly during an antechamber transfer, then recover.">
             <!-- box: lid rail, window, glove ports, stand -->
@@ -761,8 +730,8 @@ footer{
             <rect class="glass" x="104" y="72" width="44" height="40" rx="1"/>
             <line class="glass" x1="104" y1="77" x2="148" y2="77" style="opacity:.5"/>
             <line class="glass" x1="104" y1="107" x2="148" y2="107" style="opacity:.5"/>
-            <text x="126" y="90" text-anchor="middle" class="small">purifier</text>
-            <text x="126" y="99" text-anchor="middle" class="small">Cu · sieves</text>
+            <text x="126" y="90" text-anchor="middle" class="small" style="font-size:5.6px">purifier</text>
+            <text x="126" y="99" text-anchor="middle" class="small" style="font-size:5.6px">Cu · sieves</text>
             <!-- circulation: box -> purifier, purifier -> box -->
             <path class="flow" d="M78 64 V84 H104"/>
             <path class="flow" d="M104 102 H56 V64"/>
@@ -777,19 +746,143 @@ footer{
           </svg>
           <figcaption>
             <p class="tech-acr">Glovebox</p>
-            <p class="tech-name">Inert-Atmosphere Glovebox Operation &amp; Maintenance</p>
+            <p class="tech-name">Glovebox Operation &amp; Maintenance</p>
           </figcaption>
+          <p class="tech-desc"><span>Operate and maintain inert-atmosphere gloveboxes, keeping O<sub>2</sub> and H<sub>2</sub>O below 1 ppm through routine monitoring and careful antechamber transfers.</span></p>
+        </figure>
+
+        <!-- scXRD: rotation method. A crystal spins on the goniometer in the X-ray beam; each reflection that
+             crosses the Ewald sphere is drawn as a diffracted ray and recorded as a spot on the area detector. -->
+        <figure class="tech-tile" tabindex="0" style="margin:0">
+          <svg class="tech-plot" id="xrd-anim" viewBox="0 0 300 120" role="img"
+               aria-label="Animation: a monoclinic P21/c crystal rotates on a goniometer in an X-ray beam; diffracted rays hit an area detector, where spots build up into symmetric layer lines.">
+            <!-- source + beam -->
+            <rect class="glass" x="4" y="53" width="16" height="14" rx="2"/>
+            <text x="12" y="76" text-anchor="middle" class="small">X-ray</text>
+            <line class="beam-line" x1="20" y1="60" x2="226" y2="60" style="opacity:.55"/>
+            <!-- goniometer pin -->
+            <path class="glass" d="M70 72 V100 M62 100 H78 M64 104 H76"/>
+            <!-- detector panel (face-on schematic) with beam stop -->
+            <rect class="glass" x="172" y="6" width="116" height="108" rx="2"/>
+            <circle cx="230" cy="60" r="3" fill="var(--ink-60)"/>
+            <g class="rays"></g>
+            <g class="xtal"></g>
+            <g class="spots"></g>
+            <text class="tag" x="8" y="14">φ = 0°</text>
+          </svg>
+          <figcaption>
+            <p class="tech-acr">scXRD</p>
+            <p class="tech-name">Single-Crystal X-Ray Diffraction</p>
+          </figcaption>
+          <p class="tech-desc"><span>Solve structures independently, from growing and mounting air-sensitive crystals through data collection and refinement (APEX4, SAINT, SADABS, SHELXL, Olex2, PLATON).</span></p>
+        </figure>
+
+        <!-- CV: a real (simulated) reversible one-electron voltammogram drawn as the potential is swept -->
+        <figure class="tech-tile" tabindex="0" style="margin:0">
+          <svg class="tech-plot" id="cv-anim" viewBox="0 0 300 120" role="img"
+               aria-label="Animation: the potential is swept positive then back; the current traces a reversible cyclic voltammogram with anodic and cathodic peaks about 59 millivolts apart.">
+            <line class="axis" x1="20" y1="60" x2="290" y2="60" style="opacity:.5"/>
+            <line class="axis" x1="20" y1="6" x2="20" y2="114"/>
+            <text x="24" y="12">i</text>
+            <text x="290" y="56" text-anchor="end">E</text>
+            <g class="peaks" style="opacity:0">
+              <line class="dash pa" x1="0" y1="6" x2="0" y2="114"/>
+              <line class="dash pc" x1="0" y1="6" x2="0" y2="114"/>
+              <text class="dep" x="0" y="112" text-anchor="middle"></text>
+            </g>
+            <path class="trace" d=""/>
+            <circle class="dot" r="2.4" cx="-10" cy="-10"/>
+            <text class="tag" x="288" y="14" text-anchor="end">anodic sweep →</text>
+          </svg>
+          <figcaption>
+            <p class="tech-acr">CV</p>
+            <p class="tech-name">Cyclic Voltammetry</p>
+          </figcaption>
+          <p class="tech-desc"><span>Measure cyclic voltammetry of air-sensitive complexes and assess reversibility and diffusion with Randles–Ševčík analysis.</span></p>
+        </figure>
+
+        <!-- EPR: field sweep. Top: Zeeman levels split with B; at resonance the gap equals hv.
+             Bottom: the first-derivative signal is recorded on the same field axis. -->
+        <figure class="tech-tile" tabindex="0" style="margin:0">
+          <svg class="tech-plot" id="epr-anim" viewBox="0 0 300 120" role="img"
+               aria-label="Animation: the magnetic field is swept; the two electron spin levels split apart, and when their gap matches the microwave energy h-nu, the first-derivative EPR signal appears.">
+            <path class="lvl up" d=""/><path class="lvl dn" d=""/>
+            <text class="lab-up" x="0" y="0">+½</text>
+            <text class="lab-dn" x="0" y="0">−½</text>
+            <line class="hv" x1="0" y1="0" x2="0" y2="0" style="opacity:0"/>
+            <path class="trace" d=""/>
+            <line class="axis" x1="10" y1="112" x2="290" y2="112"/>
+            <line class="cursor" x1="10" y1="2" x2="10" y2="112"/>
+            <text x="290" y="108" text-anchor="end">B</text>
+            <text class="tag" x="14" y="14">B sweep</text>
+          </svg>
+          <figcaption>
+            <p class="tech-acr">EPR</p>
+            <p class="tech-name">Electron Paramagnetic Resonance</p>
+          </figcaption>
+          <p class="tech-desc"><span>Acquire, interpret, and simulate EPR spectra of paramagnetic transition metal complexes using EasySpin in MATLAB, with hands-on experience on Ti(III) and Fe(II) systems.</span></p>
+        </figure>
+
+        <!-- Schlenk line: three evacuate / N2-refill cycles on a flask, with the pressure trace -->
+        <figure class="tech-tile" tabindex="0" style="margin:0">
+          <svg class="tech-plot" id="schlenk-anim" viewBox="0 0 300 120" role="img"
+               aria-label="Animation: a flask on a dual-manifold Schlenk line goes through three evacuate and nitrogen-refill cycles; air molecules are pumped out and replaced by nitrogen while a pressure trace records the cycles.">
+            <line class="pipe vac" x1="10" y1="12" x2="140" y2="12"/>
+            <line class="pipe gas" x1="10" y1="24" x2="140" y2="24"/>
+            <text x="12" y="9" class="small">vacuum</text>
+            <text x="12" y="34" class="small">N₂</text>
+            <line class="pipe stem" x1="70" y1="12" x2="70" y2="44"/>
+            <circle class="glass" cx="70" cy="38" r="4"/>
+            <line class="tap" x1="66" y1="38" x2="74" y2="38" stroke="var(--ink)" stroke-width="1.6"/>
+            <path class="glass" d="M66 44 V58 A22 22 0 1 0 74 58 V44"/>
+            <g class="mols"></g>
+            <!-- oil bubbler on the N2 manifold -->
+            <path class="glass" d="M140 24 H146 V44 M152 30 V48 H140 V30" />
+            <g class="bubs"></g>
+            <!-- pressure trace -->
+            <line class="axis" x1="172" y1="104" x2="290" y2="104"/>
+            <line class="axis" x1="172" y1="22" x2="172" y2="104"/>
+            <text x="176" y="30" class="small">P</text>
+            <text x="290" y="114" text-anchor="end" class="small">t</text>
+            <path class="trace" d=""/>
+            <text class="tag" x="288" y="14" text-anchor="end">cycle 1/3 · evacuate</text>
+          </svg>
+          <figcaption>
+            <p class="tech-acr">Schlenk</p>
+            <p class="tech-name">Air-Free Schlenk-Line Techniques</p>
+          </figcaption>
+          <p class="tech-desc"><span>Synthesize and handle air-, moisture-, temperature-, and light-sensitive compounds under rigorously inert conditions.</span></p>
+        </figure>
+
+        <!-- Custom data analysis: raw noisy data -> baseline correction -> peak fit, driven by a script -->
+        <figure class="tech-tile" tabindex="0" style="margin:0">
+          <svg class="tech-plot" id="da-anim" viewBox="0 0 300 120" role="img"
+               aria-label="Animation: a script loads noisy data, subtracts a sloping baseline, and fits a peak, reporting the goodness of fit.">
+            <g class="code"></g>
+            <line class="axis" x1="128" y1="104" x2="290" y2="104"/>
+            <line class="axis" x1="128" y1="20" x2="128" y2="104"/>
+            <path class="faint base" d=""/>
+            <g class="pts"></g>
+            <path class="trace fit" d=""/>
+            <text class="tag" x="288" y="14" text-anchor="end">load</text>
+          </svg>
+          <figcaption>
+            <p class="tech-acr">Data analysis</p>
+            <p class="tech-name">Custom Data-Processing Software</p>
+          </figcaption>
+          <p class="tech-desc"><span>Write Python and MATLAB tools that automate processing of spectroscopic, electrochemical, and crystallographic data — NMR, EPR, scXRD, and CV — from raw files to publication-ready results.</span></p>
         </figure>
       </div>
+      <p class="tech-hint">Hover over (or tap) a technique for details.</p>
       <ol class="skills">
-        <li><span class="rank">01</span> Single-crystal X-ray diffraction — independent, crystal growth through refinement (APEX4, SAINT, SADABS, SHELXL, Olex2, PLATON)</li>
-        <li><span class="rank">02</span> Air-, moisture-, temperature-, and light-sensitive synthesis (Schlenk line, glovebox)</li>
-        <li><span class="rank">03</span> Electrochemistry — cyclic voltammetry, Randles–Ševčík analysis; two publications in this area</li>
-        <li><span class="rank">04</span> Multinuclear NMR of diamagnetic and paramagnetic complexes (¹H, ²H, ¹³C, ⁷Li, ²⁹Si, ¹¹B, ¹⁹F, ³¹P; COSY, HSQC)</li>
-        <li><span class="rank">05</span> EPR spectroscopy — acquisition and simulation of Ti(III)/Fe(II,III) spectra (EasySpin/MATLAB)</li>
-        <li><span class="rank">06</span> X-ray absorption spectroscopy (XANES) — trained user, NSLS-II, Brookhaven National Laboratory</li>
-        <li><span class="rank">07</span> Ligand design — NHC-derived imidazolin-2-iminato frameworks</li>
-        <li><span class="rank">08</span> Scientific computing — Python and MATLAB tools for spectroscopic and electrochemical data processing</li>
+        <li><span class="rank">01</span> <span>Single-crystal X-ray diffraction — independent, crystal growth through refinement (APEX4, SAINT, SADABS, SHELXL, Olex2, PLATON)</span></li>
+        <li><span class="rank">02</span> <span>Air-, moisture-, temperature-, and light-sensitive synthesis (Schlenk line, glovebox)</span></li>
+        <li><span class="rank">03</span> <span>Electrochemistry — cyclic voltammetry, Randles–Ševčík analysis; two publications in this area</span></li>
+        <li><span class="rank">04</span> <span>Multinuclear NMR of diamagnetic and paramagnetic complexes (<sup>1</sup>H, <sup>2</sup>H, <sup>13</sup>C, <sup>7</sup>Li, <sup>29</sup>Si, <sup>11</sup>B, <sup>19</sup>F, <sup>31</sup>P; COSY, HSQC)</span></li>
+        <li><span class="rank">05</span> <span>EPR spectroscopy — acquisition and simulation of Ti(III)/Fe(II,III) spectra (EasySpin/MATLAB)</span></li>
+        <li><span class="rank">06</span> <span>X-ray absorption spectroscopy (XANES) — trained user, NSLS-II, Brookhaven National Laboratory</span></li>
+        <li><span class="rank">07</span> <span>Ligand design and organic synthesis — NHC-based imidazolin-2-iminato and guanidinate ligands</span></li>
+        <li><span class="rank">08</span> <span>Scientific computing — Python and MATLAB tools for spectroscopic and electrochemical data processing</span></li>
       </ol>
     </section>
 
@@ -850,12 +943,12 @@ footer{
 
           <figure class="slide is-active">
             <img src="images/fe-imn2.gif" alt="Fe(ImN)2, rotating" onerror="this.closest('.slide').remove()">
-            <figcaption><b>Fe(ImN)₂</b><span>Linear bis(imidazolin-2-iminato) Fe(II) complex — rotation about the molecular axis</span></figcaption>
+            <figcaption><b>Fe(ImN)<sub>2</sub></b><span>Linear bis(imidazolin-2-iminato) Fe(II) complex — rotation about the molecular axis</span></figcaption>
           </figure>
 
           <figure class="slide">
             <img src="images/fe-imn2-thf.gif" alt="Fe(ImN)2 THF adduct, rotating" onerror="this.closest('.slide').remove()">
-            <figcaption><b>Fe(ImN)₂ · THF</b><span>Edit this caption in index.html to match the actual structure</span></figcaption>
+            <figcaption><b>Fe(ImN)<sub>2</sub> · THF</b><span>Edit this caption in index.html to match the actual structure</span></figcaption>
           </figure>
 
           <button type="button" class="slide-arrow prev" aria-label="Previous structure">&#8249;</button>
@@ -1013,7 +1106,7 @@ footer{
   var J = 0.13, lines = [];
   [[1,3,3,1]].forEach(function(q){ q.forEach(function(a,i){ lines.push({ppm:3.6 + (i-1.5)*J, a:a*2/3}); }); });
   [1,2,1].forEach(function(a,i){ lines.push({ppm:1.2 + (i-1)*J, a:a}); });
-  lines.push({ppm:7.26, a:1.1});
+  lines.push({ppm:7.16, a:1.1});   // C6D6 residual — air-sensitive samples
 
   // frequency-domain spectrum (Lorentzians) sampled across the ppm axis
   var W = 0.014, spec = [], fid = [], i, k, x, v;
@@ -1096,47 +1189,104 @@ function techAnim(svg, frame, still, period){
   else set(true);
 }
 
-/* ---------- scXRD: rotating reciprocal lattice vs. Ewald circle (2-D section) ---------- */
+/* ---------- scXRD: rotation-method diffraction (real Ewald-sphere geometry) ----------
+   Orthorhombic cell, Mo Ka. Lab frame: beam along +x, spindle (phi axis) along z (screen vertical).
+   A reflection G diffracts when |k0 + G| = |k0|  <=>  |G|^2 + 2k*Gx = 0; we catch the sign change
+   between frames, then project k0 + G onto a flat detector perpendicular to the beam. */
 (function(){
   var svg = document.getElementById('xrd-anim'); if(!svg) return;
   var NS = 'http://www.w3.org/2000/svg';
-  var O = {x:196, y:60}, R = 80;                         // origin of reciprocal space sits on the circle
-  var C = {x:O.x - R, y:O.y};                            // Ewald circle centre, beam travels +x
-  var ew = svg.querySelector('.ewald'); ew.setAttribute('cx', C.x); ew.setAttribute('r', R);
-  var g = svg.querySelector('.xrd-lattice'), tag = svg.querySelector('.tag');
-  var a = 17, b = 21, gam = 78 * Math.PI/180;            // oblique cell: a*, b*, gamma*
-  var pts = [];
-  function hash(h,k){ var v = Math.sin(h*12.9898 + k*78.233) * 43758.5453; return v - Math.floor(v); }
-  for(var h = -9; h <= 9; h++) for(var k = -7; k <= 7; k++){
-    var x = h*a + k*b*Math.cos(gam), y = k*b*Math.sin(gam);
-    if(Math.hypot(x,y) > 2*R || (h === 0 && k === 0)) continue;   // inside the limiting circle
-    var I = 0.25 + 0.75*hash(h,k)*hash(h,k);                      // pseudo-random |F|^2
-    var el = document.createElementNS(NS,'circle'); el.setAttribute('class','spot');
-    g.appendChild(el); pts.push({x:x, y:y, I:I, el:el, glow:0});
+  var xg = svg.querySelector('.xtal'), sg = svg.querySelector('.spots'), rg = svg.querySelector('.rays'), tag = svg.querySelector('.tag');
+  var LAM = 0.7107, K = 1/LAM, A = 8.1, B = 5.9, C = 11.2, BETA = 104.5*Math.PI/180, DMIN = 1.5;
+  // monoclinic P2(1)/c, unique axis b. Cartesian frame: b along the spindle (z), a along x, c in the x-y plane.
+  var XC = 70, YC = 60, DX = 230, DY = 60, S = 108;       // crystal centre, detector centre, detector scale
+  function hash(h,k,l){ var v = Math.sin(h*12.9898 + k*78.233 + l*37.719)*43758.5453; return v - Math.floor(v); }
+  // fixed crystal orientation U (tilt so no axis is parallel to the spindle)
+  function rot(ax, t){ var c = Math.cos(t), s = Math.sin(t);
+    return ax === 'x' ? [[1,0,0],[0,c,-s],[0,s,c]] : ax === 'y' ? [[c,0,s],[0,1,0],[-s,0,c]] : [[c,-s,0],[s,c,0],[0,0,1]]; }
+  function mul(M,N){ return M.map(function(r){ return [0,1,2].map(function(j){ return r[0]*N[0][j] + r[1]*N[1][j] + r[2]*N[2][j]; }); }); }
+  function app(M,v){ return [M[0][0]*v[0]+M[0][1]*v[1]+M[0][2]*v[2], M[1][0]*v[0]+M[1][1]*v[1]+M[1][2]*v[2], M[2][0]*v[0]+M[2][1]*v[1]+M[2][2]*v[2]]; }
+  // b (the 2-fold axis) mounted along the spindle, as for a rotation photograph, with a tiny residual misalignment
+  var U = mul(rot('x', 0.015), rot('y', 0.01));
+  var av = [A, 0, 0], bv = [0, 0, B], cv = [C*Math.cos(BETA), C*Math.sin(BETA), 0];
+  function cross(u, w){ return [u[1]*w[2]-u[2]*w[1], u[2]*w[0]-u[0]*w[2], u[0]*w[1]-u[1]*w[0]]; }
+  var vol = av[0]*(bv[1]*cv[2]-bv[2]*cv[1]) - av[1]*(bv[0]*cv[2]-bv[2]*cv[0]) + av[2]*(bv[0]*cv[1]-bv[1]*cv[0]);
+  var as = cross(bv, cv).map(function(x){ return x/vol; }), bs = cross(cv, av).map(function(x){ return x/vol; }), cs = cross(av, bv).map(function(x){ return x/vol; });
+  var refl = [];
+  var hm = Math.ceil(A/DMIN) + 1, km = Math.ceil(B/DMIN) + 1, lm = Math.ceil(C/DMIN) + 1;
+  for(var h = -hm; h <= hm; h++) for(var k = -km; k <= km; k++) for(var l = -lm; l <= lm; l++){
+    if(!h && !k && !l) continue;
+    var g = [h*as[0] + k*bs[0] + l*cs[0], h*as[1] + k*bs[1] + l*cs[1], h*as[2] + k*bs[2] + l*cs[2]];
+    var g2 = g[0]*g[0] + g[1]*g[1] + g[2]*g[2];
+    if(g2 > 1/(DMIN*DMIN)) continue;
+    if(k === 0 && l % 2 !== 0) continue;                    // c-glide: h0l, l odd absent
+    if(h === 0 && l === 0 && k % 2 !== 0) continue;         // 2(1) screw: 0k0, k odd absent
+    // Laue class 2/m: (hkl) = (-h-k-l) = (h-kl) = (-hk-l) share one intensity
+    var hh = h, ll = l; if(hh < 0 || (hh === 0 && ll < 0)){ hh = -hh; ll = -ll; }
+    var I = hash(hh, Math.abs(k), ll);
+    I = I*I*I * Math.exp(-1.5*g2);
+    if(I < 0.16) continue;
+    refl.push({g: app(U, g), g2: g2, I: I, prev: null});
   }
-  var origin = document.createElementNS(NS,'circle');
-  origin.setAttribute('cx',O.x); origin.setAttribute('cy',O.y); origin.setAttribute('r',2.2); origin.setAttribute('class','spot hit');
-  g.appendChild(origin);
-  var last = 0;
-  function place(phi, dt){
+  // crystal shape: a small prism, same orientation U, drawn as shaded faces
+  var hx = 9, hy = 6, hz = 4.5, V = [];
+  for(var i = 0; i < 8; i++) V.push(app(U, [(i&1?1:-1)*hx, (i&2?1:-1)*hy, (i&4?1:-1)*hz]));
+  var F = [[0,1,3,2],[4,5,7,6],[0,1,5,4],[2,3,7,6],[0,2,6,4],[1,3,7,5]];
+  var faces = F.map(function(){ return el(xg, 'polygon', {fill:'var(--glow)', stroke:'var(--ink)', 'stroke-width':.6}); });
+  function el(p, n, a){ var e = document.createElementNS(NS, n); for(var k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; }
+  function drawCrystal(phi){
+    var R = rot('z', phi), P = V.map(function(v){ return app(R, v); });
+    // view: screen x = lab x + 0.35*lab y (slight obliqueness), screen y = -lab z + 0.25*lab y; depth = lab y
+    var pr = P.map(function(p){ return [XC + p[0] + 0.35*p[1], YC - p[2] + 0.25*p[1]]; });
+    var order = F.map(function(f, i){
+      var d = f.reduce(function(s, j){ return s + P[j][1]; }, 0)/4;
+      var a = P[f[0]], b = P[f[1]], c = P[f[3]];
+      var n = [(b[1]-a[1])*(c[2]-a[2]) - (b[2]-a[2])*(c[1]-a[1]), (b[2]-a[2])*(c[0]-a[0]) - (b[0]-a[0])*(c[2]-a[2]), (b[0]-a[0])*(c[1]-a[1]) - (b[1]-a[1])*(c[0]-a[0])];
+      var L = Math.hypot(n[0],n[1],n[2]) || 1, shade = Math.abs((-0.3*n[0] - 0.8*n[1] + 0.5*n[2])/L);
+      return {i:i, d:d, shade:shade};
+    }).sort(function(p, q){ return q.d - p.d; });
+    order.forEach(function(o, z){
+      var f = faces[o.i]; xg.appendChild(f);
+      f.setAttribute('points', F[o.i].map(function(j){ return pr[j][0].toFixed(1) + ',' + pr[j][1].toFixed(1); }).join(' '));
+      f.setAttribute('fill-opacity', (0.18 + 0.55*o.shade).toFixed(2));
+    });
+  }
+  var spots = [], rays = [];
+  function clear(){ sg.textContent = ''; rg.textContent = ''; spots = []; rays = []; refl.forEach(function(r){ r.prev = null; }); }
+  function hit(r, phi, now, flash){
+    var R = rot('z', phi), G = app(R, r.g), kd = [K + G[0], G[1], G[2]];
+    if(kd[0] <= 0) return;
+    var u = kd[1]/kd[0], v = kd[2]/kd[0], x = DX + S*u, y = DY - S*v;
+    if(x < 174 || x > 286 || y < 8 || y > 112) return;
+    var rad = 0.7 + 1.6*Math.sqrt(r.I);
+    spots.push(el(sg, 'circle', {cx:x.toFixed(1), cy:y.toFixed(1), r:rad.toFixed(2), fill:'var(--glow)', 'fill-opacity':(0.45 + 0.55*Math.sqrt(r.I)).toFixed(2)}));
+    if(flash && r.I > 0.12) rays.push({e: el(rg, 'line', {x1:XC, y1:YC, x2:x.toFixed(1), y2:y.toFixed(1), stroke:'var(--glow)', 'stroke-width':.6}), t: now});
+  }
+  function step(phi, now, flash){
     var c = Math.cos(phi), s = Math.sin(phi);
-    for(var i = 0; i < pts.length; i++){
-      var p = pts[i], X = O.x + p.x*c - p.y*s, Y = O.y + p.x*s + p.y*c;
-      var d = Math.abs(Math.hypot(X - C.x, Y - C.y) - R);
-      if(d < 2.4) p.glow = 1;                             // Bragg condition met
-      p.glow = Math.max(0, p.glow - dt/900);
-      p.el.setAttribute('cx', X.toFixed(1)); p.el.setAttribute('cy', Y.toFixed(1));
-      p.el.setAttribute('r', (1.4 + p.glow*(1.4 + 2.4*p.I)).toFixed(2));
-      p.el.classList.toggle('hit', p.glow > 0.05);
-      p.el.style.opacity = (0.55 + 0.45*p.glow).toFixed(2);
+    for(var i = 0; i < refl.length; i++){
+      var r = refl[i], gx = c*r.g[0] - s*r.g[1];
+      var f = r.g2 + 2*K*gx;                            // Ewald condition (rotation about z leaves g2 unchanged)
+      if(r.prev !== null && (f > 0) !== (r.prev > 0)) hit(r, phi, now, flash);
+      r.prev = f;
     }
   }
-  techAnim(svg, function(f, ms){
-    var dt = Math.min(64, ms - last); last = ms; if(dt < 0) dt = 16;
-    var phi = f * 2*Math.PI;
-    place(phi, dt);
-    tag.textContent = 'φ = ' + Math.round(phi*180/Math.PI) + '°';
-  }, function(){ place(0.6, 0); tag.textContent = 'reciprocal lattice'; }, 14000);
+  var SWEEP = 0.85, PHIMAX = Math.PI, lastF = 1;
+  function render(f, ms){
+    if(f < lastF) clear(); lastF = f;
+    var phi = PHIMAX * Math.min(1, f/SWEEP);
+    drawCrystal(phi);
+    if(f <= SWEEP) step(phi, ms, true);
+    rays = rays.filter(function(r){ var a = 1 - (ms - r.t)/450; if(a <= 0){ r.e.remove(); return false; } r.e.setAttribute('stroke-opacity', (0.8*a).toFixed(2)); return true; });
+    var o = f < 0.95 ? 1 : 1 - (f - 0.95)/0.05; sg.style.opacity = o;
+    tag.textContent = f <= SWEEP ? 'φ = ' + Math.round(phi*180/Math.PI) + '°' : 'P2₁/c · ' + spots.length + ' reflections';
+  }
+  function still(){
+    clear();
+    for(var t = 0; t <= 400; t++) step(PHIMAX*t/400, 0, false);
+    drawCrystal(0.5); tag.textContent = 'P2₁/c · ' + spots.length + ' reflections';
+  }
+  techAnim(svg, render, still, 12000);
 })();
 
 /* ---------- EPR: Zeeman splitting + first-derivative line on a shared field axis ---------- */
@@ -1172,9 +1322,9 @@ function techAnim(svg, frame, still, period){
     cur.setAttribute('x1', x); cur.setAttribute('x2', x); cur.style.opacity = f < SWEEP ? .8 : 0;
     var near = Math.max(0, 1 - Math.abs(x - XR)/14);
     arrow(f < SWEEP ? near : 0, f < SWEEP ? x : XR);
-    tag.textContent = near > 0.3 && f < SWEEP ? 'ΔE = hν  (resonance)' : (f < SWEEP ? 'B sweep' : 'first-derivative signal');
+    tag.textContent = near > 0.3 && f < SWEEP ? 'ΔE = hν (resonance)' : (f < SWEEP ? 'B sweep' : 'first-derivative signal');
     tr.style.opacity = f < HOLD ? 1 : 1 - (f - HOLD)/(1 - HOLD);
-  }, function(){ levels(XL); trace(X1); cur.style.opacity = 0; arrow(1, XR); tag.textContent = 'ΔE = hν = gμB·B'; }, 7000);
+  }, function(){ levels(XL); trace(X1); cur.style.opacity = 0; arrow(1, XR); tag.innerHTML = 'ΔE = hν = gμ<tspan baseline-shift="sub" font-size="6">B</tspan> B'; }, 7000);
 })();
 
 /* ---------- CV: explicit finite-difference simulation of a reversible 1e- couple (Nernstian surface, equal D) ---------- */
@@ -1207,7 +1357,7 @@ function techAnim(svg, frame, still, period){
     var xa = data.pts[data.ia].x, xc = data.pts[data.ic].x;
     var pa = peaks.querySelector('.pa'), pc = peaks.querySelector('.pc'), lab = peaks.querySelector('.dep');
     pa.setAttribute('x1', xa); pa.setAttribute('x2', xa); pc.setAttribute('x1', xc); pc.setAttribute('x2', xc);
-    lab.setAttribute('x', (xa + 4).toFixed(1)); lab.setAttribute('text-anchor','start'); lab.textContent = 'ΔEp ≈ ' + data.dEp + ' mV';
+    lab.setAttribute('x', (xa + 4).toFixed(1)); lab.setAttribute('text-anchor','start'); lab.innerHTML = 'ΔE<tspan baseline-shift="sub" font-size="5.5">p</tspan> ≈ ' + data.dEp + ' mV';
   }
   function draw(count){
     var d = '', P = data.pts;
@@ -1324,6 +1474,141 @@ function techAnim(svg, frame, still, period){
       (v.o2 < 1 && v.h2o < 1 ? 'O₂, H₂O < 1 ppm' : 'recovering'));
   }
   techAnim(svg, render, function(){ render(0.99, 0); }, 11000);
+})();
+</script>
+<script>
+/* ---------- Custom data analysis: script steps + baseline subtraction + peak fit ---------- */
+(function(){
+  var svg = document.getElementById('da-anim'); if(!svg) return;
+  var NS = 'http://www.w3.org/2000/svg';
+  var code = svg.querySelector('.code'), pg = svg.querySelector('.pts'), fit = svg.querySelector('.fit'),
+      base = svg.querySelector('.base'), tag = svg.querySelector('.tag');
+  var lines = ['>>> d = load("run_*.csv")', '>>> d = baseline(d)', '>>> p = fit_peak(d)', ''];
+  var tl = lines.map(function(_, k){ var t = document.createElementNS(NS,'text'); t.setAttribute('x', 8); t.setAttribute('y', 30 + k*14); code.appendChild(t); return t; });
+  // synthetic data: Gaussian peak on a sloping baseline + deterministic noise
+  var N = 60, X0 = 132, X1 = 286, pts = [];
+  function rnd(n){ var v = Math.sin(n*12.9898)*43758.5453; return v - Math.floor(v); }
+  function gauss(u){ return Math.exp(-Math.pow((u - 0.55)/0.09, 2)/2); }
+  function bl(u){ return 0.12 + 0.35*u; }
+  for(var i = 0; i < N; i++){
+    var u = i/(N - 1), nz = (rnd(i) + rnd(i + 99) - 1)*0.09;
+    var c = document.createElementNS(NS,'circle'); c.setAttribute('class','pt'); c.setAttribute('r', 1.3); pg.appendChild(c);
+    pts.push({u:u, raw: gauss(u) + bl(u) + nz, cor: gauss(u) + nz, el:c});
+  }
+  // R^2 of the fitted curve against the corrected data (computed, not typed in)
+  var mean = 0, ssr = 0, sst = 0;
+  pts.forEach(function(p){ mean += p.cor/N; });
+  pts.forEach(function(p){ ssr += Math.pow(p.cor - gauss(p.u), 2); sst += Math.pow(p.cor - mean, 2); });
+  lines[3] = 'R² = ' + (1 - ssr/sst).toFixed(3);
+  function X(u){ return X0 + (X1 - X0)*u; }
+  function Y(v){ return 98 - v*62; }
+  base.setAttribute('d', 'M' + X(0) + ' ' + Y(bl(0)) + ' L' + X(1) + ' ' + Y(bl(1)));
+  function type(k, f){ var L = lines[k]; tl[k].textContent = L.slice(0, Math.round(L.length*Math.max(0, Math.min(1, f)))); }
+  function render(f){
+    // phases: 0-.22 load (points appear) | .22-.45 baseline | .45-.7 fit | .7-.92 result | fade
+    var load = Math.min(1, f/0.2), bs = Math.max(0, Math.min(1, (f - 0.25)/0.15)), ft = Math.max(0, Math.min(1, (f - 0.5)/0.18));
+    var e = bs*bs*(3 - 2*bs);
+    type(0, f/0.08); type(1, (f - 0.22)/0.06); type(2, (f - 0.45)/0.06); type(3, (f - 0.7)/0.05);
+    tl[3].style.fill = 'var(--glow)';
+    pts.forEach(function(p, k){
+      p.el.setAttribute('cx', X(p.u).toFixed(1));
+      p.el.setAttribute('cy', Y(p.raw*(1 - e) + p.cor*e).toFixed(1));
+      p.el.style.opacity = k/N < load ? 1 : 0;
+    });
+    base.style.opacity = f > 0.2 && f < 0.42 ? 1 - e : 0;
+    var d = '', n = Math.round(120*ft);
+    for(var j = 0; j <= n; j++){ var u = j/120; d += (j ? 'L' : 'M') + X(u).toFixed(1) + ' ' + Y(gauss(u)).toFixed(1); }
+    fit.setAttribute('d', n ? d : '');
+    tag.textContent = f < 0.22 ? 'load' : f < 0.45 ? 'baseline' : f < 0.7 ? 'fit' : 'done';
+    var o = f < 0.92 ? 1 : 1 - (f - 0.92)/0.08;
+    svg.querySelector('.code').style.opacity = o; pg.style.opacity = o; fit.style.opacity = o;
+  }
+  techAnim(svg, render, function(){ render(0.85); }, 9000);
+})();
+</script>
+<script>
+/* ---------- Ligand synthesis: two schemes drawn in sequence ---------- */
+(function(){
+  var svg = document.getElementById('lig-anim'); if(!svg) return;
+  var NS = 'http://www.w3.org/2000/svg', A = svg.querySelector('.sA'), B = svg.querySelector('.sB'), tag = svg.querySelector('.tag');
+  function el(parent, name, attrs, text){
+    var e = document.createElementNS(NS, name);
+    for(var k in attrs) e.setAttribute(k, attrs[k]);
+    if(text != null) e.textContent = text;
+    parent.appendChild(e); return e;
+  }
+  function group(parent){ return el(parent, 'g', {'class':'stage'}); }
+  function bond(g, a, b, dbl, side){                 // dbl: draw a second, inset line
+    el(g,'line',{'class':'bond',x1:a[0],y1:a[1],x2:b[0],y2:b[1]});
+    if(dbl){
+      var dx = b[0]-a[0], dy = b[1]-a[1], L = Math.hypot(dx,dy), nx = -dy/L*2.6*(side||1), ny = dx/L*2.6*(side||1);
+      var t = 0.18;
+      el(g,'line',{'class':'bond',x1:a[0]+dx*t+nx,y1:a[1]+dy*t+ny,x2:b[0]-dx*t+nx,y2:b[1]-dy*t+ny});
+    }
+  }
+  function atom(g, p, label, r){ el(g,'circle',{'class':'atom-bg',cx:p[0],cy:p[1],r:r||4.6}); el(g,'text',{'class':'atom',x:p[0],y:p[1]+2.9,'text-anchor':'middle'},label); }
+  function sub(g, x, y, t, anchor){ el(g,'text',{'class':'sub',x:x,y:y,'text-anchor':anchor||'middle'},t); }
+  function arrow(g, x1, x2, y){
+    el(g,'line',{'class':'rxn-arrow',x1:x1,y1:y,x2:x2,y2:y});
+    el(g,'path',{'class':'rxn-arrow',d:'M'+(x2-4)+' '+(y-3)+' L'+x2+' '+y+' L'+(x2-4)+' '+(y+3)});
+  }
+  // imidazole ring: C2 points right; vertices at 0, 72, 144, 216, 288 deg
+  function ring(g, cx, cy){
+    var R = 13, v = [0,72,144,216,288].map(function(d){ var a = d*Math.PI/180; return [cx + R*Math.cos(a), cy + R*Math.sin(a)]; });
+    bond(g, v[0], v[1]); bond(g, v[1], v[2]); bond(g, v[2], v[3], true, 1); bond(g, v[3], v[4]); bond(g, v[4], v[0]);
+    atom(g, v[1], 'N'); atom(g, v[4], 'N');
+    sub(g, v[1][0]+2, v[1][1]+11, 'R'); sub(g, v[4][0]+2, v[4][1]-6, 'R');
+    return v;
+  }
+
+  // ----- scheme A: NHC + Me3SiN3 -> ImN-SiMe3 + N2 -----
+  var a1 = group(A), a2 = group(A), a3 = group(A), a4 = group(A);
+  var v = ring(a1, 38, 64);
+  el(a1,'circle',{cx:v[0][0]+4.5,cy:v[0][1]-2,r:.9,fill:'var(--ink)'}); el(a1,'circle',{cx:v[0][0]+4.5,cy:v[0][1]+2,r:.9,fill:'var(--ink)'});
+  sub(a1, 38, 110, 'NHC');
+  arrow(a2, 76, 150, 64); sub(a2, 113, 58, 'Me₃SiN₃'); sub(a2, 113, 75, '− N₂');
+  var w = ring(a3, 182, 64), Nx = [w[0][0]+15, w[0][1]];
+  bond(a3, w[0], Nx, true, 1); bond(a3, Nx, [Nx[0]+9, Nx[1]-9]); atom(a3, Nx, 'N');
+  sub(a3, Nx[0]+10.5, Nx[1]-7, 'SiMe₃', 'start');
+  sub(a3, 196, 110, 'ImN–SiMe₃');
+  // N2 bubbles leaving
+  var bubs = [0,1,2].map(function(k){ return el(a4,'text',{'class':'sub',x:132 + k*7,y:84,'text-anchor':'middle'},'N₂'); });
+
+  // ----- scheme B: iPrN=C=NiPr + LiNMe2 -> lithium guanidinate -----
+  var b1 = group(B), b2 = group(B), b3 = group(B);
+  var C = [40,64], N1 = [22,64], N2 = [58,64];
+  bond(b1, N1, C, true, -1); bond(b1, C, N2, true, -1); atom(b1, N1, 'N'); atom(b1, N2, 'N');
+  el(b1,'circle',{'class':'atom-bg',cx:C[0],cy:C[1],r:3.6}); el(b1,'text',{'class':'atom',x:C[0],y:C[1]+2.9,'text-anchor':'middle'},'C');
+  sub(b1, N1[0], N1[1]-8, 'R'); sub(b1, N2[0], N2[1]-8, 'R');
+  sub(b1, 40, 110, 'carbodiimide');
+  arrow(b2, 76, 150, 64); sub(b2, 113, 58, 'LiNR′₂');
+  var G = [212,64], Na = [200,48], Nb = [200,80], Nc = [232,64], Li = [182,64];
+  bond(b3, G, Na); bond(b3, G, Nb); bond(b3, G, Nc);
+  // delocalised N-C-N: dashed inner arc
+  el(b3,'path',{'class':'bond',d:'M203 53 Q208 64 203 75','stroke-dasharray':'1.6 1.6'});
+  el(b3,'line',{'class':'bond',x1:Li[0],y1:Li[1],x2:Na[0],y2:Na[1]});
+  el(b3,'line',{'class':'bond',x1:Li[0],y1:Li[1],x2:Nb[0],y2:Nb[1]});
+  atom(b3, Na, 'N'); atom(b3, Nb, 'N'); atom(b3, Nc, 'N'); atom(b3, Li, 'Li', 5.6);
+  el(b3,'circle',{'class':'atom-bg',cx:G[0],cy:G[1],r:3.6}); el(b3,'text',{'class':'atom',x:G[0],y:G[1]+2.9,'text-anchor':'middle'},'C');
+  sub(b3, Na[0]+4, Na[1]-7, 'R'); sub(b3, Nb[0]+4, Nb[1]+12, 'R'); sub(b3, Nc[0]+5.5, Nc[1]+2.4, 'R′₂', 'start');
+  sub(b3, 210, 110, 'Li guanidinate');
+
+  function fade(g, f, t0, t1){ var o = Math.max(0, Math.min(1, (f - t0)/(t1 - t0))); g.style.opacity = o; return o; }
+  function render(f){
+    var inA = f < 0.5, g = inA ? f/0.5 : (f - 0.5)/0.5;
+    var out = g > 0.9 ? 1 - (g - 0.9)/0.1 : 1;
+    A.style.opacity = inA ? out : 0; B.style.opacity = inA ? 0 : out;
+    if(inA){
+      fade(a1, g, 0, .1); fade(a2, g, .18, .28); fade(a3, g, .45, .58);
+      var bo = g > .3 && g < .7 ? 1 : 0; a4.style.opacity = bo;
+      bubs.forEach(function(b, k){ var t = ((g - .3)/.4*1.5 + k/3) % 1; b.setAttribute('y', (86 - t*14).toFixed(1)); b.style.opacity = (1 - t).toFixed(2); });
+      tag.textContent = 'imidazolin-2-iminato';
+    } else {
+      fade(b1, g, 0, .1); fade(b2, g, .18, .28); fade(b3, g, .45, .58);
+      tag.textContent = 'guanidinate';
+    }
+  }
+  techAnim(svg, render, function(){ render(0.9*0.5); }, 12000);
 })();
 </script>
 </body>
