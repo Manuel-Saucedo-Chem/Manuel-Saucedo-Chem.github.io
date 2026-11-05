@@ -299,6 +299,8 @@ section > h2{
 
 /* ---------- programs (addition) ---------- */
 .src-pending{font-family:var(--mono);font-size:.8rem;color:var(--ink-60);margin:0}
+.prog-links{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.2rem;margin:.4rem 0 0}
+.btn-sm{padding:.4rem .95rem;font-size:.9rem}
 .prog-shot{display:block;max-width:100%;height:auto;margin:.5rem 0;border:1px solid var(--rule)}
 
 
@@ -422,18 +424,16 @@ footer{
   --rule:#143A1B;
   --serif:var(--mono);
   --sans:var(--mono);
-  --photo-filter:grayscale(1) contrast(1.15) brightness(.9);
+  --photo-filter:none;
 }
 [data-theme="hacker"] body{font-size:.95rem}
 [data-theme="hacker"] h1,[data-theme="hacker"] h2,[data-theme="hacker"] h3{letter-spacing:0}
 [data-theme="hacker"] .rail h1{font-size:1.45rem}
 [data-theme="hacker"] .rail h1::before{content:"> ";color:var(--glow)}
-[data-theme="hacker"] .portrait::after{
-  background:
-    repeating-linear-gradient(180deg,rgba(0,0,0,.35) 0 1px,transparent 1px 3px),
-    linear-gradient(rgba(57,255,106,.22),rgba(57,255,106,.22));
-  mix-blend-mode:normal;
-}
+/* headshot stays clean in hacker: no tint/scanline overlay, and it sits above the page scanlines */
+[data-theme="hacker"] .portrait::after{display:none}
+[data-theme="hacker"] .rail{position:sticky;z-index:51}
+@media (max-width:860px){[data-theme="hacker"] .rail{position:relative}}
 [data-theme="hacker"] section > h2::before{content:"$ ";color:var(--glow)}
 [data-theme="hacker"] .intro .lede::after{
   content:"_";margin-left:.15em;color:var(--glow);
@@ -893,36 +893,52 @@ footer{
       <h2>Programs I've written</h2>
       <ul class="programs">
         <li>
-          <h3>Cyclic voltammetry analysis suite</h3>
-          <p class="meta"><span>Python</span><span>Fortier Laboratory</span></p>
+          <h3>SauCV</h3>
+          <p class="meta"><span>Python</span><span>v1.0</span><span>Windows</span></p>
           <p>Processes cyclic voltammetry data and runs Randles–Ševčík analysis — built to
             speed up routine electrochemical workup in the group.</p>
-          <p class="src-pending">Available upon request — still in beta</p>
+          <p class="prog-links">
+            <a class="btn btn-sm" href="https://github.com/Manuel-Saucedo-Chem/SauCV/releases/latest">Download for Windows</a>
+            <a href="https://github.com/Manuel-Saucedo-Chem/SauCV">Source on GitHub</a>
+          </p>
         </li>
         <li>
-          <h3>NMR processing suite</h3>
-          <p class="meta"><span>Python</span><span>Fortier Laboratory</span></p>
-          <p>A tool for processing and picking peaks in NMR spectra, tuned for
-            the air-sensitive dia- and paramagnetic complexes the group works with.</p>
-          <p class="src-pending">Available upon request — still in beta</p>
+          <h3>SauceNMR</h3>
+          <p class="meta"><span>Python</span><span>v1.0</span><span>Windows</span></p>
+          <p>A desktop tool that takes raw Bruker FIDs to finished spectra: Fourier transform,
+            phasing, solvent referencing, integration, multiplet and <i>J</i> analysis, baseline
+            correction, and impurity detection, ending in SI-ready report text and
+            publication-quality figures. Built for the air-sensitive dia- and paramagnetic
+            complexes the group works with.</p>
+          <p class="prog-links">
+            <a class="btn btn-sm" href="https://github.com/Manuel-Saucedo-Chem/SauceNMR/releases/latest">Download for Windows</a>
+            <a href="https://github.com/Manuel-Saucedo-Chem/SauceNMR">Source on GitHub</a>
+          </p>
         </li>
         <li>
-          <h3>EPR file assembler</h3>
-          <p class="meta"><span>MATLAB</span><span>Fortier Laboratory</span></p>
-          <p>Builds the input files that feed EasySpin, turning raw EPR acquisition
-            parameters into simulation-ready code.</p>
-          <p class="src-pending">Available upon request — still in beta</p>
+          <h3>EasierSpin</h3>
+          <p class="meta"><span>Python</span><span>v1.0</span><span>Windows</span></p>
+          <p>A graphical front end for EasySpin: set up spin systems, isotopes, g and hyperfine
+            tensors, linewidths, and multi-component fits in a form, and it writes the
+            simulation- and fitting-ready MATLAB script for you.</p>
+          <p class="prog-links">
+            <a class="btn btn-sm" href="https://github.com/Manuel-Saucedo-Chem/EasierSpin/releases/latest">Download for Windows</a>
+            <a href="https://github.com/Manuel-Saucedo-Chem/EasierSpin">Source on GitHub</a>
+          </p>
         </li>
         <li>
-          <h3>ORTEP crystal structure visualizer</h3>
-          <p class="meta"><span>Python</span><span>customtkinter</span><span>POV-Ray export</span></p>
+          <h3>ORTEPSauce</h3>
+          <p class="meta"><span>Python</span><span>v1.0</span><span>Windows</span></p>
           <p>Opens .cif, .ins, and .res files and draws structures in ORTEP style with
             thermal ellipsoids. Exports publication-quality images and rotating GIFs, with
             shadows and reflections reserved for the final POV-Ray-style render so the live
             view stays fast.</p>
           <!-- Drop a screenshot at images/ortep-viewer.png and it appears here; if missing, this hides itself -->
-          <img class="prog-shot" src="images/ortep-viewer.png" alt="Screenshot of the ORTEP crystal structure visualizer" loading="lazy" onerror="this.remove()">
-          <p class="src-pending">In development</p>
+          <img class="prog-shot" src="images/ortep-viewer.png" alt="Screenshot of ORTEPSauce" loading="lazy" onerror="this.remove()">
+          <p class="prog-links">
+            <a class="btn btn-sm" href="https://github.com/Manuel-Saucedo-Chem/ORTEPSauce/releases/latest">Download for Windows</a>
+            <a href="https://github.com/Manuel-Saucedo-Chem/ORTEPSauce">Source on GitHub</a>
+          </p>
         </li>
       </ul>
     </section>
