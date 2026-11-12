@@ -893,6 +893,21 @@ footer{
       <h2>Programs I've written</h2>
       <ul class="programs">
         <li>
+          <h3>ORTEPSauce</h3>
+          <p class="meta"><span>Python</span><span>v1.0</span><span>Windows</span></p>
+          <p>Opens .cif, .ins, and .res files and draws structures in ORTEP style with
+            thermal ellipsoids. Exports publication-quality images and rotating GIFs, with
+            shadows and reflections reserved for the final POV-Ray-style render so the live
+            view stays fast.</p>
+          <!-- Drop a screenshot at images/ortep-viewer.png and it appears here; if missing, this hides itself -->
+          <img class="prog-shot" src="images/ortep-viewer.png" alt="Screenshot of ORTEPSauce" loading="lazy" onerror="this.remove()">
+          <p class="prog-links">
+            <a class="btn btn-sm" href="https://github.com/Manuel-Saucedo-Chem/ORTEPSauce/releases/latest" data-goatcounter-click="download-ORTEPSauce">Download for Windows</a>
+            <a href="https://github.com/Manuel-Saucedo-Chem/ORTEPSauce" data-goatcounter-click="source-ORTEPSauce">Source on GitHub</a>
+          </p>
+          <p class="pub-cite" style="margin-top:.5rem">Saucedo Cañas, M. A.; Fortier, S. ORTEPSauce [Computer software]; Zenodo, <b>2026</b>. DOI: <a href="https://doi.org/10.5281/zenodo.24170231" data-goatcounter-click="doi-10.5281/zenodo.24170231">10.5281/zenodo.24170231</a></p>
+        </li>
+        <li>
           <h3>SauCV</h3>
           <p class="meta"><span>Python</span><span>v1.0</span><span>Windows</span></p>
           <p>Processes cyclic voltammetry data and runs Randles–Ševčík analysis — built to
@@ -924,20 +939,6 @@ footer{
           <p class="prog-links">
             <a class="btn btn-sm" href="https://github.com/Manuel-Saucedo-Chem/EasierSpin/releases/latest" data-goatcounter-click="download-EasierSpin">Download for Windows</a>
             <a href="https://github.com/Manuel-Saucedo-Chem/EasierSpin" data-goatcounter-click="source-EasierSpin">Source on GitHub</a>
-          </p>
-        </li>
-        <li>
-          <h3>ORTEPSauce</h3>
-          <p class="meta"><span>Python</span><span>v1.0</span><span>Windows</span></p>
-          <p>Opens .cif, .ins, and .res files and draws structures in ORTEP style with
-            thermal ellipsoids. Exports publication-quality images and rotating GIFs, with
-            shadows and reflections reserved for the final POV-Ray-style render so the live
-            view stays fast.</p>
-          <!-- Drop a screenshot at images/ortep-viewer.png and it appears here; if missing, this hides itself -->
-          <img class="prog-shot" src="images/ortep-viewer.png" alt="Screenshot of ORTEPSauce" loading="lazy" onerror="this.remove()">
-          <p class="prog-links">
-            <a class="btn btn-sm" href="https://github.com/Manuel-Saucedo-Chem/ORTEPSauce/releases/latest" data-goatcounter-click="download-ORTEPSauce">Download for Windows</a>
-            <a href="https://github.com/Manuel-Saucedo-Chem/ORTEPSauce" data-goatcounter-click="source-ORTEPSauce">Source on GitHub</a>
           </p>
         </li>
       </ul>
@@ -1061,10 +1062,17 @@ footer{
 
   function fromHash(){ return decodeURIComponent(location.hash.slice(1)); }
 
+  // History API can throw in sandboxed previews (about:srcdoc); never let it block tab switching
+  function setHash(mode, id){
+    try {
+      if(mode === 'push') history.pushState(null, '', '#' + id);
+      else history.replaceState(null, '', '#' + id);
+    } catch(err) { /* ignore: URL just won't update in this context */ }
+  }
   tabLinks.forEach(function(a, i){
     a.addEventListener('click', function(e){
       e.preventDefault();
-      if(location.hash !== '#' + ids[i]) history.pushState(null, '', '#' + ids[i]);
+      if(location.hash !== '#' + ids[i]) setHash('push', ids[i]);
       select(ids[i]);
       // keep the tab bar in view if the reader had scrolled down
       var top = tabsBar.getBoundingClientRect().top + window.pageYOffset;
@@ -1079,7 +1087,7 @@ footer{
       else if(e.key === 'End') n = ids.length - 1;
       if(n === null) return;
       e.preventDefault();
-      history.replaceState(null, '', '#' + ids[n]);
+      setHash('replace', ids[n]);
       select(ids[n], true);
     });
   });
