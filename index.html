@@ -301,6 +301,11 @@ section > h2{
 .src-pending{font-family:var(--mono);font-size:.8rem;color:var(--ink-60);margin:0}
 .prog-links{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.2rem;margin:.4rem 0 0}
 .btn-sm{padding:.4rem .95rem;font-size:.9rem}
+.prog-banner{display:flex;gap:.8rem;align-items:flex-start;margin:0 0 2rem;padding:1rem 1.2rem;
+  background:var(--panel-2);border:1px solid var(--rule);border-left:3px solid var(--glow);color:var(--ink-80);line-height:1.55}
+.prog-banner p{margin:0;max-width:72ch}
+.prog-banner strong{color:var(--ink)}
+.prog-banner-icon{flex:none;color:var(--glow);font-family:var(--mono);font-weight:600;line-height:1.55}
 .prog-shot{display:block;max-width:100%;height:auto;margin:.5rem 0;border:1px solid var(--rule)}
 
 
@@ -891,6 +896,12 @@ footer{
          ========================================================== -->
     <section id="programs" role="tabpanel" aria-labelledby="tab-programs">
       <h2>Programs I've written</h2>
+      <div class="prog-banner" role="note">
+        <span class="prog-banner-icon" aria-hidden="true">&rarr;</span>
+        <p><strong>Questions, bugs, or ideas? I'd love to hear from you.</strong>
+          Everyone is welcome to reach out by email at any time, whether you need help, want to report a bug,
+          or have a suggestion that could make these tools better for the community.</p>
+      </div>
       <ul class="programs">
         <li>
           <h3>ORTEPSauce</h3>
